@@ -24,7 +24,7 @@ public class Enemy_Action : MonoBehaviour
         if (inRange)
         {
             posDiff = target.position - transform.position;
-            rotz = Mathf.Atan2(posDiff.y, posDiff.x) * Mathf.Rad2Deg - 90f;
+            rotz = Mathf.Atan2(posDiff.y, posDiff.x) * Mathf.Rad2Deg + fixedZ;
             transform.rotation = Quaternion.Euler(0, 0, rotz);
         }
             

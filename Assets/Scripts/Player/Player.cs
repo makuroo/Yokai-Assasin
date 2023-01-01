@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
     public float dashSpeed = 50f;
     public Vector3 moveDir;
     private bool canDash = true;
-    private float dashTime;
-    private float dashCoolDown = .1f;
+    //private float dashTime;
+    //private float dashCoolDown = .1f;
     private bool isDashing;
     public float parryRange;
     private Vector3 lastDir;
