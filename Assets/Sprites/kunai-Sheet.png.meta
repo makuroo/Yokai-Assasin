@@ -66,7 +66,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 200
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -128,12 +128,12 @@ TextureImporter:
       name: kunai-Sheet_0
       rect:
         serializedVersion: 2
-        x: 53
-        y: 905
-        width: 425
-        height: 270
+        x: 43
+        y: 42
+        width: 67
+        height: 409
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -149,12 +149,12 @@ TextureImporter:
       name: kunai-Sheet_1
       rect:
         serializedVersion: 2
-        x: 554
-        y: 902
-        width: 427
-        height: 272
+        x: 188
+        y: 42
+        width: 64
+        height: 409
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -170,12 +170,12 @@ TextureImporter:
       name: kunai-Sheet_2
       rect:
         serializedVersion: 2
-        x: 48
-        y: 445
-        width: 427
-        height: 315
+        x: 333
+        y: 42
+        width: 65
+        height: 409
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -191,12 +191,12 @@ TextureImporter:
       name: kunai-Sheet_3
       rect:
         serializedVersion: 2
-        x: 549
-        y: 498
-        width: 429
-        height: 261
+        x: 478
+        y: 40
+        width: 70
+        height: 411
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -204,48 +204,6 @@ TextureImporter:
       bones: []
       spriteID: 57e1843f3ad3a15b0800000000000000
       internalID: -5396933429079564683
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kunai-Sheet_4
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 80
-        width: 431
-        height: 265
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d419db26dcf5de750800000000000000
-      internalID: 6335825586509680973
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kunai-Sheet_5
-      rect:
-        serializedVersion: 2
-        x: 546
-        y: 68
-        width: 435
-        height: 277
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d98c57cdc131ec8f0800000000000000
-      internalID: -518455892422309731
       vertices: []
       indices: 
       edges: []
@@ -261,12 +219,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      kunai-Sheet_5: -518455892422309731
       kunai-Sheet_2: -6808950970216461759
       kunai-Sheet_3: -5396933429079564683
       kunai-Sheet_0: -3731394631933408049
       kunai-Sheet_1: -5390328787457731909
-      kunai-Sheet_4: 6335825586509680973
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

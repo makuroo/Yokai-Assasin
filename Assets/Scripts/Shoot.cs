@@ -9,6 +9,7 @@ public class Shoot : MonoBehaviour
     public Vector3 mousePos;
     public Camera mainCam;
     public Vector3 direction;
+    public Vector2 tempMousePos;
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +22,11 @@ public class Shoot : MonoBehaviour
     {
         mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePos - transform.position;
-        if (Input.GetMouseButtonDown(0) && (Mathf.Abs(direction.x) > 0.5 || Mathf.Abs(direction.y)>0.5))
+        if (Input.GetMouseButtonDown(0) && (Mathf.Abs(direction.x) > 0.1 || Mathf.Abs(direction.y)>0.1))
         {
             if (cooldown <= 0)
             {
+                tempMousePos = mousePos;
                 cooldown = 0.5f;
                 Instantiate(projectile, transform.position, transform.rotation);
             }

@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 2f;
+    [SerializeField] private float speed = 0.1f;
     private Rigidbody2D rb;
     private bool canBeParried = false;
     private Vector3 targetPos;
+    public int damage;
 
     // Start is called before the first frame update
     void Start()
     {
         targetPos = FindObjectOfType<Player>().transform.position;
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 1f);
     }
 
     // Update is called once per frame
@@ -27,7 +28,6 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("ParryField"))
         {
             canBeParried = true;
-            Debug.Log(canBeParried);
         }
 
         if (canBeParried && collision.CompareTag("Projectile"))
@@ -35,6 +35,10 @@ public class EnemyProjectile : MonoBehaviour
             Debug.Log("hit");
             Destroy(gameObject);
             canBeParried = false;
+        }
+
+        if (collision.gameObject.CompareTag("Player")){
+            Destroy(gameObject);
         }
     }
 }

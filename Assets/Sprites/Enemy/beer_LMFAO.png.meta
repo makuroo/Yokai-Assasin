@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a381a0a1aa21fd4498fa84987343937b
+guid: cc2c356c05060bd40ad868ff4bb8ef3b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 60
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -105,91 +105,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: tanuki_idle_front-Sheet_0
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 0
-        width: 81
-        height: 123
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 953bd5eac202bf8468554c8a4952ad0e
-      internalID: 1728071651
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: tanuki_idle_front-Sheet_1
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 0
-        width: 83
-        height: 122
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 08ac749d8ff5a5f4a9033d89baa6a2d0
-      internalID: 1351004209
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: tanuki_idle_front-Sheet_2
-      rect:
-        serializedVersion: 2
-        x: 275
-        y: 0
-        width: 89
-        height: 119
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3de606c757a91cc43a69c756de6e662a
-      internalID: 1499974600
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: tanuki_idle_front-Sheet_3
-      rect:
-        serializedVersion: 2
-        x: 403
-        y: 0
-        width: 88
-        height: 118
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5e7a276d804f3e4ca6e95a0c4f1ddcd
-      internalID: 1318655662
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -200,11 +116,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      tanuki_idle_front-Sheet_3: 1318655662
-      tanuki_idle_front-Sheet_1: 1351004209
-      tanuki_idle_front-Sheet_0: 1728071651
-      tanuki_idle_front-Sheet_2: 1499974600
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

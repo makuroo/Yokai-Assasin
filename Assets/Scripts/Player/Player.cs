@@ -5,7 +5,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float playerSpeed;
-    public bool shield = false;
     private Rigidbody2D rb;
     public int hp = 20;
     private float movementInputDirectionX, movementInputdirectionY;
@@ -13,14 +12,11 @@ public class Player : MonoBehaviour
     public float dashSpeed = 50f;
     public Vector3 moveDir;
     private bool canDash = true;
-    //private float dashTime;
-    //private float dashCoolDown = .1f;
-    private bool isDashing;
-    public float parryRange;
+    private float dashCoolDown = 0.5f;
     private Vector3 lastDir;
-    public GameObject ParryPoint;
     public LayerMask projectileLayer;
-    private bool canParry = false;
+    [SerializeField] private GameObject parryField;
+    public int damage = 2;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,21 +27,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
         {
-            shield = false;
-            canParry = false;
-            anim.SetBool("isShield", shield);
+            StartCoroutine(Dash(dashCoolDown));
         }
 
-        if (canParry && shield == false)
+        if (hp <= 0)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                canParry = false;
-                Debug.Log("Parried");
-            }
+            Destroy(transform.parent.gameObject);
         }
+        parryField.transform.position = transform.position;
     }
 
     private void FixedUpdate()
@@ -58,18 +49,33 @@ public class Player : MonoBehaviour
         else
             lastDir =new  Vector3(transform.localScale.x, 0, 0);
         rb.velocity = moveDir * playerSpeed *Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
-        {
-            isDashing = true;
-            canDash = false;
-            Vector3 dashPosition = transform.position + lastDir * dashSpeed;
-            rb.MovePosition(dashPosition);
-            canDash = true;
-        }
+
 
         if (movementInputDirectionX > 0)
             transform.localScale = new Vector2(1, 1);
         else if (movementInputDirectionX < 0)
             transform.localScale = new Vector2(-1, 1);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag("EnemyProjectile"))
+        {
+            TakeDamage(collision.gameObject.GetComponent<EnemyProjectile>().damage);
+        }
+    }
+
+    private IEnumerator Dash(float dashCD)
+    {
+        canDash = false;
+        Vector3 dashPosition = transform.position + lastDir * dashSpeed;
+        rb.MovePosition(dashPosition);
+        yield return new WaitForSeconds(dashCD);
+        canDash = true;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        hp -= damage;
     }
 }

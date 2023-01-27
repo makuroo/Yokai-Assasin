@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8d99c5d2ca5b0494ea88db81efdd92a9
+guid: 3cec8e99554fa1644a034255f2904246
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -107,13 +107,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tanuki_idle_back-Sheet_0
+      name: sprite_sheet_shuriken_0
       rect:
         serializedVersion: 2
-        x: 22
-        y: 0
-        width: 82
-        height: 123
+        x: 67
+        y: 100
+        width: 401
+        height: 394
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +121,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bdb138f294e298345a33a4801e27acf8
-      internalID: 51380318
+      spriteID: 718e1acfddb79c944b2874ec70cae217
+      internalID: 826116805
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tanuki_idle_back-Sheet_1
+      name: sprite_sheet_shuriken_1
       rect:
         serializedVersion: 2
-        x: 150
-        y: 0
-        width: 83
-        height: 122
+        x: 600
+        y: 81
+        width: 394
+        height: 412
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,20 +142,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8835ce506d10fa24ebb248e2e0043612
-      internalID: -824429898
+      spriteID: 3293ac4d1ef409141bbeab28fa5b9503
+      internalID: 98310780
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tanuki_idle_back-Sheet_2
+      name: sprite_sheet_shuriken_2
       rect:
         serializedVersion: 2
-        x: 275
-        y: 0
-        width: 89
-        height: 119
+        x: 1139
+        y: 65
+        width: 409
+        height: 407
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,20 +163,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c3ef43f7a475f704eb719b8362d13f81
-      internalID: 1318197334
+      spriteID: 885877bd1d68288438e5a7d2e96ac681
+      internalID: -1839527632
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tanuki_idle_back-Sheet_3
+      name: sprite_sheet_shuriken_3
       rect:
         serializedVersion: 2
-        x: 403
-        y: 0
-        width: 88
-        height: 118
+        x: 1697
+        y: 65
+        width: 404
+        height: 408
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,8 +184,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc665db6c4f75f04f84cbade918cafa8
-      internalID: -839793007
+      spriteID: fe813c7a411b53c489d188b7cdfc4151
+      internalID: -2063829909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_sheet_shuriken_4
+      rect:
+        serializedVersion: 2
+        x: 2258
+        y: 73
+        width: 384
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e2e12ce5df8e5a4e9345ad28b80809c
+      internalID: -2138032816
       vertices: []
       indices: 
       edges: []
@@ -201,10 +222,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      tanuki_idle_back-Sheet_2: 1318197334
-      tanuki_idle_back-Sheet_0: 51380318
-      tanuki_idle_back-Sheet_3: -839793007
-      tanuki_idle_back-Sheet_1: -824429898
+      sprite_sheet_shuriken_3: -2063829909
+      sprite_sheet_shuriken_2: -1839527632
+      sprite_sheet_shuriken_0: 826116805
+      sprite_sheet_shuriken_4: -2138032816
+      sprite_sheet_shuriken_1: 98310780
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
