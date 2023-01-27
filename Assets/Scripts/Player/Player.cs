@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     public float playerSpeed;
     private Rigidbody2D rb;
     public int hp = 20;
+    public int maxHealth;
+    public int currentHealth;
     private float movementInputDirectionX, movementInputdirectionY;
     public Animator anim;
     public float dashSpeed = 50f;
@@ -15,17 +17,21 @@ public class Player : MonoBehaviour
     private float dashCoolDown = 0.5f;
     private Vector3 lastDir;
     public LayerMask projectileLayer;
+    public HealthBar healthBar;
     [SerializeField] private GameObject parryField;
     public int damage = 2;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+      rb = GetComponent<Rigidbody2D>();
+      anim = GetComponent<Animator>();
+
+      // setting player health
+      currentHealth = maxHealth;
+      healthBar.SetMaxHealth(maxHealth);
     }
 
-    // Update is called once per frame
-    void Update()
+    if (canParry && shield == false)
     {
         if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
         {
@@ -39,22 +45,23 @@ public class Player : MonoBehaviour
         parryField.transform.position = transform.position;
     }
 
-    private void FixedUpdate()
+  private void FixedUpdate()
+  {
+    movementInputDirectionX = Input.GetAxisRaw("Horizontal");
+    movementInputdirectionY = Input.GetAxisRaw("Vertical");
+    moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
+    if (moveDir != new Vector3(0, 0, 0))
+      lastDir = moveDir;
+    else
+      lastDir = new Vector3(transform.localScale.x, 0, 0);
+    rb.velocity = moveDir * playerSpeed * Time.deltaTime;
+    if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
     {
-        movementInputDirectionX = Input.GetAxisRaw("Horizontal");
-        movementInputdirectionY = Input.GetAxisRaw("Vertical");
-        moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
-        if (moveDir != new Vector3(0, 0, 0))
-            lastDir = moveDir;
-        else
-            lastDir =new  Vector3(transform.localScale.x, 0, 0);
-        rb.velocity = moveDir * playerSpeed *Time.deltaTime;
-
-
-        if (movementInputDirectionX > 0)
-            transform.localScale = new Vector2(1, 1);
-        else if (movementInputDirectionX < 0)
-            transform.localScale = new Vector2(-1, 1);
+      isDashing = true;
+      canDash = false;
+      Vector3 dashPosition = transform.position + lastDir * dashSpeed;
+      rb.MovePosition(dashPosition);
+      canDash = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -76,6 +83,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        hp -= damage;
+      currentHealth -= damage;
+      healthBar.SetHealth(currentHealth);
     }
+  }
 }
