@@ -33,8 +33,9 @@ public class EnemyProjectile : MonoBehaviour
         if (canBeParried && collision.CompareTag("Projectile"))
         {
             Debug.Log("hit");
-            Destroy(gameObject);
             canBeParried = false;
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
 
         if (collision.gameObject.CompareTag("Player")){

@@ -88,7 +88,7 @@ public class Enemy_Action : MonoBehaviour
         {
             damage = 3;
         }
-        if(player.hp < damage)
+        if(player.currentHealth < damage)
         {
             meleeSensor.canMelee = false;
         }

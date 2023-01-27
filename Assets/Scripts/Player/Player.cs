@@ -6,8 +6,7 @@ public class Player : MonoBehaviour
 {
     public float playerSpeed;
     private Rigidbody2D rb;
-    public int hp = 20;
-    public int maxHealth;
+    public int maxHealth =20;
     public int currentHealth;
     private float movementInputDirectionX, movementInputdirectionY;
     public Animator anim;
@@ -26,44 +25,50 @@ public class Player : MonoBehaviour
       rb = GetComponent<Rigidbody2D>();
       anim = GetComponent<Animator>();
 
-      // setting player health
+        // setting player health
       currentHealth = maxHealth;
       healthBar.SetMaxHealth(maxHealth);
     }
 
-    if (canParry && shield == false)
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
         {
             StartCoroutine(Dash(dashCoolDown));
         }
 
-        if (hp <= 0)
+        if (currentHealth <= 0)
         {
             Destroy(transform.parent.gameObject);
         }
         parryField.transform.position = transform.position;
     }
 
-  private void FixedUpdate()
-  {
-    movementInputDirectionX = Input.GetAxisRaw("Horizontal");
-    movementInputdirectionY = Input.GetAxisRaw("Vertical");
-    moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
-    if (moveDir != new Vector3(0, 0, 0))
-      lastDir = moveDir;
-    else
-      lastDir = new Vector3(transform.localScale.x, 0, 0);
-    rb.velocity = moveDir * playerSpeed * Time.deltaTime;
-    if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
+    private void FixedUpdate()
     {
-      isDashing = true;
-      canDash = false;
-      Vector3 dashPosition = transform.position + lastDir * dashSpeed;
-      rb.MovePosition(dashPosition);
-      canDash = true;
-    }
+        movementInputDirectionX = Input.GetAxisRaw("Horizontal");
+        movementInputdirectionY = Input.GetAxisRaw("Vertical");
+        moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
 
+        //keep face direction when idlle
+        if (moveDir != new Vector3(0, 0, 0))
+            lastDir = moveDir;
+        else
+            lastDir = new Vector3(transform.localScale.x, 0, 0);
+        rb.velocity = moveDir * playerSpeed * Time.deltaTime;
+
+        //facing left right
+        if (movementInputDirectionX > 0)
+            transform.localScale = new Vector2(1, 1);
+        else if (movementInputDirectionX < 0)
+            transform.localScale = new Vector2(-1, 1);
+
+        //dash mechanic
+        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
+        {
+            StartCoroutine(Dash(dashCoolDown));
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("EnemyProjectile"))
@@ -86,5 +91,4 @@ public class Player : MonoBehaviour
       currentHealth -= damage;
       healthBar.SetHealth(currentHealth);
     }
-  }
-}
+ }

@@ -157,6 +157,10 @@ PrefabInstance:
       value: chara1
       objectReference: {fileID: 0}
     - target: {fileID: 7457256224951114107, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: dashSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457256224951114107, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
       propertyPath: parryField
       value: 
       objectReference: {fileID: 6369401467441920835}
