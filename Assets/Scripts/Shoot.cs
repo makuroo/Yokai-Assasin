@@ -24,6 +24,12 @@ public class Shoot : MonoBehaviour
         sr = player.GetComponent<SpriteRenderer>();
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         player.OnPickUpPowerUps += Player_OnPickUpPowerUps;
+        player.OnLeftMouseClick += Player_OnLeftMouseClick;
+    }
+
+    private void Player_OnLeftMouseClick(object sender, System.EventArgs e)
+    {
+        InstantiateProjectile();
     }
 
     private void Player_OnPickUpPowerUps(object sender, System.EventArgs e)
@@ -37,17 +43,7 @@ public class Shoot : MonoBehaviour
     {
         mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePos - transform.position;
-        if (player.shoot && (Mathf.Abs(direction.x) > 0.1 || Mathf.Abs(direction.y)>0.1))
-        {
-            if (cooldown <= 0)
-            {
-                player.shoot = false;
-                tempMousePos = mousePos;
-                cooldown = 0.5f;
-                Instantiate(projectile, transform.position, transform.rotation);
-                specialCount--;
-            }
-        }
+
         cooldown -= Time.deltaTime;
         if (specialCount <= 0)
         {
@@ -60,10 +56,24 @@ public class Shoot : MonoBehaviour
 
     private void ChangeThrowable()
     {
-        Debug.Log("test");
         int spriteIndex = 0;
         if (spriteIndex == 0)
             sr.sprite = sprite[spriteIndex++];
         anim.runtimeAnimatorController = animController[1];
+    }
+
+    private void InstantiateProjectile()
+    {
+        if ((Mathf.Abs(direction.x) > 0.1 || Mathf.Abs(direction.y) > 0.1))
+        {
+            if (cooldown <= 0)
+            {
+                player.shoot = false;
+                tempMousePos = mousePos;
+                cooldown = 0.5f;
+                Instantiate(projectile, transform.position, transform.rotation);
+                specialCount--;
+            }
+        }
     }
 }

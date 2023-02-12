@@ -2,24 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class projectiles : MonoBehaviour
+public class Projectiles : MonoBehaviour
 {
-    private float speed = 3f;
+    private float speed = 10f;
     private Rigidbody2D projectileRb;
     private int damage;
 
     private Player player;
     public  Shoot shoot;
 
- 
-
-
     // Start is called before the first frame update
     void Start()
     {
         GetReferences();
         Move();
-
         Destroy(gameObject, 2f);
     }
 

@@ -7,6 +7,7 @@ public class EnemyProjectile : MonoBehaviour
     [SerializeField] private float speed = 0.1f;
 
     private Rigidbody2D rb;
+    Player player;
     private bool canBeParried = false;
     private Vector3 targetPos;
     public int damage;
@@ -15,6 +16,7 @@ public class EnemyProjectile : MonoBehaviour
     void Start()
     {
         targetPos = FindObjectOfType<Player>().transform.position;
+        player = FindObjectOfType<Player>();
         Destroy(gameObject, 1f);
     }
 
@@ -26,14 +28,14 @@ public class EnemyProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("ParryField"))
+        if (collision.gameObject.CompareTag("ParryField") && player.currStamina >= 5)
         {
             canBeParried = true;
         }
 
         if (canBeParried && collision.CompareTag("Projectile"))
         {
-            Debug.Log("hit");
+            player.currStamina -= 5;
             canBeParried = false;
             Destroy(collision.gameObject);
             Destroy(gameObject);
