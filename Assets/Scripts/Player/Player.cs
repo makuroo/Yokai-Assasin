@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
     private float movementInputDirectionX, movementInputdirectionY;
 
     private bool canDash = true;
+    public bool shoot = false;
 
     public int damage = 2;
     public int maxHealth =20;
@@ -44,22 +46,32 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
+
+        if(EventSystem.current.IsPointerOverGameObject() == false)
         {
-            StartCoroutine(Dash(dashCoolDown));
+            if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
+            {
+                StartCoroutine(Dash(dashCoolDown));
+            }
+
+            if (currentHealth <= 0)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+            parryField.transform.position = transform.position;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                shoot = true;
+            }
+
+            //dash mechanic
+            if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
+            {
+                StartCoroutine(Dash(dashCoolDown));
+            }
         }
 
-        if (currentHealth <= 0)
-        {
-            Destroy(transform.parent.gameObject);
-        }
-        parryField.transform.position = transform.position;
-
-        //dash mechanic
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
-        {
-            StartCoroutine(Dash(dashCoolDown));
-        }
     }
 
     private void FixedUpdate()

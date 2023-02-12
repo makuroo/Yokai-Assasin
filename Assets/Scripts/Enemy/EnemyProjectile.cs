@@ -40,7 +40,7 @@ public class EnemyProjectile : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Player")){
-            collision.GetComponent<Player>().TakeDamage(0);
+            collision.GetComponent<Player>().TakeDamage(damage);
             Destroy(gameObject);
         }
     }

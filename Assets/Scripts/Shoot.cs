@@ -37,10 +37,11 @@ public class Shoot : MonoBehaviour
     {
         mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePos - transform.position;
-        if (Input.GetMouseButtonDown(0) && (Mathf.Abs(direction.x) > 0.1 || Mathf.Abs(direction.y)>0.1))
+        if (player.shoot && (Mathf.Abs(direction.x) > 0.1 || Mathf.Abs(direction.y)>0.1))
         {
             if (cooldown <= 0)
             {
+                player.shoot = false;
                 tempMousePos = mousePos;
                 cooldown = 0.5f;
                 Instantiate(projectile, transform.position, transform.rotation);

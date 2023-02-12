@@ -21,5 +21,6 @@ public class MousePointShoot : MonoBehaviour
         rotz= Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg -8f;
         transform.rotation = Quaternion.Euler(0, 0, rotz);
         transform.localScale = transform.parent.localScale;
+
     }
 }
