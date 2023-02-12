@@ -9,6 +9,7 @@ TagManager:
   - ParryField
   - EnemyProjectile
   - Melee Range
+  - PowerUp
   layers:
   - Default
   - TransparentFX

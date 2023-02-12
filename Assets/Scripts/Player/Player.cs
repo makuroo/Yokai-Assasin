@@ -1,24 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float playerSpeed;
-    private Rigidbody2D rb;
+    [SerializeField]private float playerSpeed;
+    [SerializeField]public float dashSpeed = 50f;
+    private float dashCoolDown = 0.5f;
+    private float movementInputDirectionX, movementInputdirectionY;
+
+    private bool canDash = true;
+
+    public int damage = 2;
     public int maxHealth =20;
     public int currentHealth;
-    private float movementInputDirectionX, movementInputdirectionY;
+
     public Animator anim;
-    public float dashSpeed = 50f;
+    
     public Vector3 moveDir;
-    private bool canDash = true;
-    private float dashCoolDown = 0.5f;
     private Vector3 lastDir;
+
+    private Rigidbody2D rb;
+    
     public LayerMask projectileLayer;
+
     public HealthBar healthBar;
+
+    public event EventHandler OnPickUpPowerUps;
+
     [SerializeField] private GameObject parryField;
-    public int damage = 2;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +54,12 @@ public class Player : MonoBehaviour
             Destroy(transform.parent.gameObject);
         }
         parryField.transform.position = transform.position;
+
+        //dash mechanic
+        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
+        {
+            StartCoroutine(Dash(dashCoolDown));
+        }
     }
 
     private void FixedUpdate()
@@ -62,19 +80,6 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector2(1, 1);
         else if (movementInputDirectionX < 0)
             transform.localScale = new Vector2(-1, 1);
-
-        //dash mechanic
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canDash)
-        {
-            StartCoroutine(Dash(dashCoolDown));
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.CompareTag("EnemyProjectile"))
-        {
-            TakeDamage(collision.gameObject.GetComponent<EnemyProjectile>().damage);
-        }
     }
 
     private IEnumerator Dash(float dashCD)
@@ -91,4 +96,14 @@ public class Player : MonoBehaviour
       currentHealth -= damage;
       healthBar.SetHealth(currentHealth);
     }
- }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("PowerUp"))
+        {
+            damage = 10;
+            OnPickUpPowerUps?.Invoke(this, EventArgs.Empty);
+            Destroy(collision.gameObject);
+        }
+    }
+}

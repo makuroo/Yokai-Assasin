@@ -95,7 +95,6 @@ public class MultiplePointPatrol : MonoBehaviour
         if (lastDirection == FacingDirection.left)
         {
             anim.SetInteger("lastDir", (int)FacingDirection.right);
-            Debug.Log((int)FacingDirection.left);
             anim.SetBool("Stop", stop);
         }
         else if (lastDirection == FacingDirection.right)
@@ -107,13 +106,11 @@ public class MultiplePointPatrol : MonoBehaviour
         {
             anim.SetInteger("lastDir", (int)FacingDirection.back);
             anim.SetBool("Stop", stop);
-            Debug.Log((int)FacingDirection.back);
         }
         else if (lastDirection == FacingDirection.forward)
         {
             anim.SetInteger("lastDir", (int)FacingDirection.forward - 1);
             anim.SetBool("Stop", stop);
-            Debug.Log((int)FacingDirection.forward -1);
         }
 
         yield return new WaitForSeconds(waitTime);

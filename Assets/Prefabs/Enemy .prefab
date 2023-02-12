@@ -173,8 +173,7 @@ MonoBehaviour:
   speed: 2
   hp: 30
   damage: 2
-  target: {fileID: 0}
-  facingIndex: 4
+  facingIndex: 0
   faceDirectionSprites:
   - {fileID: 1728071651, guid: a381a0a1aa21fd4498fa84987343937b, type: 3}
   - {fileID: 1385862198, guid: b6b5672cb6d035c46a0d02075e36d946, type: 3}
@@ -182,6 +181,7 @@ MonoBehaviour:
   sr: {fileID: 0}
   anim: {fileID: 0}
   sensor: {fileID: 0}
+  meleeSensor: {fileID: 0}
 --- !u!114 &1977286821839962749
 MonoBehaviour:
   m_ObjectHideFlags: 0

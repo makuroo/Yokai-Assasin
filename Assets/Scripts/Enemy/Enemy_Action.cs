@@ -7,16 +7,12 @@ public class Enemy_Action : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private float speed;
 
-    public int hp = 20;
-    public int damage = 2;
-    private float diffX;
-    private float diffY;
-    private float tan;
+    [SerializeField]private int hp = 20;
+    [SerializeField]private int damage = 2;
+
+    private Vector2 faceDir;
+    private float angle;
     
-    [SerializeField] Transform target;
-    //private Vector3 posDiff;
-    //private float fixedZ = -90;
-    //private float rotz;
     public int facingIndex;
     public Sprite[] faceDirectionSprites;
     public SpriteRenderer sr;
@@ -24,7 +20,8 @@ public class Enemy_Action : MonoBehaviour
     public Sensor sensor;
     public Sensor meleeSensor;
 
-    private Player player;
+    private Transform playerTransform;
+    private Player playerScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +30,12 @@ public class Enemy_Action : MonoBehaviour
         sensor = transform.GetComponentInChildren<Sensor>();
         meleeSensor = transform.GetChild(1).GetComponentInChildren<Sensor>();
         projectile.GetComponent<EnemyProjectile>().damage = damage;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     private void Update()
     {
-
         if (hp <= 0)
         {
             Destroy(gameObject);
@@ -46,38 +43,7 @@ public class Enemy_Action : MonoBehaviour
 
         if (sensor.inRange == 0)
         {
-            diffX = transform.position.x - target.position.x;
-            diffY = transform.position.y - target.position.y;
-            tan = diffX / diffY;
-            anim.SetBool("inRange", true);
-            if (target.position.x < transform.position.x && (Mathf.Atan(tan) * Mathf.Rad2Deg <= -55f || Mathf.Atan(tan) * Mathf.Rad2Deg >= 55f) && Mathf.Abs(target.position.y - transform.position.y) < 0.8f)
-            {
-                facingIndex = 1;
-                sr.sprite = faceDirectionSprites[facingIndex];
-                anim.SetInteger("attackDir", facingIndex);
-                sr.flipX = false;
-            }
-            else if (target.position.x > transform.position.x && (Mathf.Atan(tan) * Mathf.Rad2Deg <= -55f || Mathf.Atan(tan) * Mathf.Rad2Deg >= 55f) && Mathf.Abs(target.position.y - transform.position.y) < 0.8f)
-            {
-                facingIndex = 1;
-                sr.sprite = faceDirectionSprites[facingIndex];
-                anim.SetInteger("attackDir", facingIndex);
-                sr.flipX = true;
-            }
-            else if (target.position.y > transform.position.y && (Mathf.Atan(tan) * Mathf.Rad2Deg > -55f || Mathf.Atan(tan) * Mathf.Rad2Deg < 55f))
-            {
-                facingIndex = 2;
-                // sr.sprite = faceDirectionSprites[facingIndex];
-                anim.SetInteger("attackDir", facingIndex);
-                sr.flipX = false;
-            }
-            else if (target.position.y < transform.position.y && (Mathf.Atan(tan) * Mathf.Rad2Deg > -55f || Mathf.Atan(tan) * Mathf.Rad2Deg < 55f))
-            {
-                facingIndex = 0;
-                //sr.sprite = faceDirectionSprites[facingIndex];
-                anim.SetInteger("attackDir", facingIndex);
-                sr.flipX = false;
-            }
+            SetFacingDirection();
         }
         else
         {
@@ -88,7 +54,7 @@ public class Enemy_Action : MonoBehaviour
         {
             damage = 3;
         }
-        if(player.currentHealth < damage)
+        if(playerScript.currentHealth < damage)
         {
             meleeSensor.canMelee = false;
         }
@@ -96,18 +62,12 @@ public class Enemy_Action : MonoBehaviour
         anim.SetBool("canMelee", meleeSensor.canMelee);
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-
-    }
-
     public void Shoot()
     {
-        
         if (sensor.inRange == 0 && sensor.canMelee == false)
         {
             Instantiate(projectile, transform.position, transform.rotation);
+            projectile.GetComponent<EnemyProjectile>().damage = damage;
         }
     }
 
@@ -115,7 +75,7 @@ public class Enemy_Action : MonoBehaviour
     {
         if (collision.transform.CompareTag("Projectile"))
         {
-            player.TakeDamage(player.damage);
+            playerScript.TakeDamage(playerScript.damage);
             Debug.Log(hp);
         }
     }
@@ -124,7 +84,7 @@ public class Enemy_Action : MonoBehaviour
     {
         if (collision.transform.CompareTag("Projectile"))
         {
-            hp -= player.damage;
+            hp -= playerScript.damage;
             Debug.Log(hp);
             Destroy(collision.gameObject);
         }
@@ -132,6 +92,44 @@ public class Enemy_Action : MonoBehaviour
 
     public void MeleeAttack()
     {
-        player.TakeDamage(damage);
+        playerScript.TakeDamage(damage);
+    }
+
+    private void SetFacingDirection()
+    {
+        faceDir = (transform.position - playerTransform.position).normalized;
+        angle = Mathf.Atan2(faceDir.y, faceDir.x) * Mathf.Rad2Deg;
+        anim.SetBool("inRange", true);
+
+        if (angle <= 45 && angle >= -45)
+        {
+            facingIndex = 1;
+            sr.sprite = faceDirectionSprites[facingIndex];
+            anim.SetInteger("attackDir", facingIndex);
+            sr.flipX = false;
+        }
+        else if (angle >= 135 || angle <= -135)
+        {
+            facingIndex = 1;
+            sr.sprite = faceDirectionSprites[facingIndex];
+            anim.SetInteger("attackDir", facingIndex);
+            sr.flipX = true;
+
+        }
+        else if (angle < -45 && angle > -135)
+        {
+            facingIndex = 2;
+            // sr.sprite = faceDirectionSprites[facingIndex];
+            anim.SetInteger("attackDir", facingIndex);
+            sr.flipX = false;
+            Debug.Log(3);
+        }
+        else if (angle > 45 && angle < 135)
+        {
+            facingIndex = 0;
+            //sr.sprite = faceDirectionSprites[facingIndex];
+            anim.SetInteger("attackDir", facingIndex);
+            sr.flipX = false;
+        }
     }
 }

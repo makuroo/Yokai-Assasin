@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     [SerializeField] private float speed = 0.1f;
+
     private Rigidbody2D rb;
     private bool canBeParried = false;
     private Vector3 targetPos;
@@ -39,6 +40,7 @@ public class EnemyProjectile : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Player")){
+            collision.GetComponent<Player>().TakeDamage(0);
             Destroy(gameObject);
         }
     }
