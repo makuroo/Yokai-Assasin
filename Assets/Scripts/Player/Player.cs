@@ -14,12 +14,15 @@ public class Player : MonoBehaviour
     private bool canDash = true;
     public bool shoot = false;
     private bool isDashing = false;
+    public bool parried = false;
 
     public int damage = 2;
     public int maxHealth =20;
     public int currentHealth;
     public int maxStamina;
     public int currStamina;
+    public int dashStamina = 5;
+    public int parryStamina = 5;
 
     public Animator anim;
     
@@ -35,6 +38,7 @@ public class Player : MonoBehaviour
     public event EventHandler OnPickUpPowerUps;
     public event EventHandler OnLeftMouseClick;
     public event EventHandler OnRightMouseClick;
+    public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
 
     [SerializeField] private GameObject parryField;
 
@@ -43,27 +47,44 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      rb = GetComponent<Rigidbody2D>();
-      anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         // setting player health
-      currentHealth = maxHealth;
-      currStamina = maxStamina;
-      healthBar.SetMaxHealth(maxHealth);
-      OnRightMouseClick += Player_OnRightMouseClick;
+        currentHealth = maxHealth;
+        currStamina = maxStamina;
+        healthBar.SetMaxHealth(maxHealth);
+        OnRightMouseClick += Player_OnRightMouseClick;
+        OnStaminaUse += Player_OnStaminaUse;
     }
 
-
+    private void Player_OnStaminaUse(object sender, EventArgs e)
+    {
+        
+    }
+    public class OnStaminaUseEventArgs : EventArgs
+    {
+        public int maxStamina, currStamina, dashStamina, parryStamina;
+    }
 
     private void Update()
     {
 
-        if(EventSystem.current.IsPointerOverGameObject() == false)
+        if (EventSystem.current.IsPointerOverGameObject() == false)
         {
-            if (Input.GetMouseButton(1) && currStamina>=5)
+            if (Input.GetMouseButton(1) && currStamina >= dashStamina)
             {
-                currStamina -= 5;
+
                 isDashing = true;
+            }
+
+            if (isDashing || parried)
+            {
+                OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+                if (parried)
+                {
+                    parried = false;
+                }
             }
 
             if (currentHealth <= 0)
@@ -123,6 +144,8 @@ public class Player : MonoBehaviour
             StartCoroutine(Dash(dashCoolDown));
         isDashing = false;
     }
+
+
 
     public void TakeDamage(int damage)
     {

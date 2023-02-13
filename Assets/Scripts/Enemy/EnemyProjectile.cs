@@ -28,14 +28,14 @@ public class EnemyProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("ParryField") && player.currStamina >= 5)
+        if (collision.gameObject.CompareTag("ParryField"))
         {
             canBeParried = true;
         }
 
-        if (canBeParried && collision.CompareTag("Projectile"))
+        if (canBeParried && collision.CompareTag("Projectile") && player.currStamina >= player.parryStamina)
         {
-            player.currStamina -= 5;
+            player.parried = true;
             canBeParried = false;
             Destroy(collision.gameObject);
             Destroy(gameObject);
