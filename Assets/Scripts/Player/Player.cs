@@ -46,112 +46,124 @@ public class Player : MonoBehaviour
   [SerializeField] private GameObject parryField;
 
 
-
-  // Start is called before the first frame update
-  void Start()
-  {
-    rb = GetComponent<Rigidbody2D>();
-    anim = GetComponent<Animator>();
-
-    // setting player health
-    currentHealth = maxHealth;
-    currStamina = maxStamina;
-    healthBar.SetMaxHealth(maxHealth);
-    OnRightMouseClick += Player_OnRightMouseClick;
-  }
-
-
-
-  private void Update()
-  {
-
-    if (EventSystem.current.IsPointerOverGameObject() == false)
+    private void Awake()
     {
-      if (Input.GetMouseButton(1) && currStamina >= dashStamina)
-      {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
-        isDashing = true;
+        // setting player health
+        currentHealth = maxHealth;
+        currStamina = maxStamina;
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        OnRightMouseClick += Player_OnRightMouseClick;
+    }
+
+    private void Update()
+    {
+        if (EventSystem.current.IsPointerOverGameObject() == false)
+        {
+            if (Input.GetMouseButtonDown(1) && currStamina >= dashStamina && isDashing == false)
+            {
+                isDashing = true;
+            }
+
+            VerifyParryStaminaUsage();
+
+            if (currentHealth <= 0)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+            parryField.transform.position = transform.position;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnLeftMouseClick?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        movementInputDirectionX = Input.GetAxisRaw("Horizontal");
+        movementInputdirectionY = Input.GetAxisRaw("Vertical");
+        moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
+
+        //keep face direction when idlle
+        if (moveDir != new Vector3(0, 0, 0))
+            lastDir = moveDir;
+        else
+            lastDir = new Vector3(transform.localScale.x, 0, 0);
+        rb.velocity = moveDir * playerSpeed * Time.fixedDeltaTime;
+
+        //facing left right
+        if (movementInputDirectionX > 0)
+            transform.localScale = new Vector2(1, 1);
+        else if (movementInputDirectionX < 0)
+            transform.localScale = new Vector2(-1, 1);
+
+        if (isDashing)
+        {
+            OnRightMouseClick?.Invoke(this, EventArgs.Empty);
+            
+        }
+    }
+
+    private IEnumerator Dash(float dashCD)
+    {
+        VerifyDashStaminaUsage();
+        canDash = false;
+        rb.velocity = new Vector2(lastDir.x, lastDir.y) * dashSpeed;
+        Debug.Log(rb.velocity);
+        //Vector3 dashPosition = transform.position + lastDir * dashSpeed;
+        //rb.MovePosition(dashPosition);
+        yield return new WaitForSeconds(dashCD);
+        canDash = true;
+        Debug.Log("can dash");
+    }
+
+    private void Player_OnRightMouseClick(object sender, EventArgs e)
+    {
+        
+        if (canDash)
+            StartCoroutine(Dash(dashCoolDown));
+        isDashing = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+      currentHealth -= damage;
+      healthBar.SetHealth(currentHealth);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+      if (collision.CompareTag("PowerUp"))
+      {
+        damage = 10;
+        OnPickUpPowerUps?.Invoke(this, EventArgs.Empty);
+        Destroy(collision.gameObject);
       }
+    }
+    private void VerifyDashStaminaUsage()
+    {
+        if (isDashing)
+        {
+            OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+        }
+    }
 
-      if (isDashing || parried)
-      {
-        OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+    public void VerifyParryStaminaUsage()
+    {
         if (parried)
         {
-          parried = false;
+            OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
         }
-      }
-
-      if (currentHealth <= 0)
-      {
-        Destroy(transform.parent.gameObject);
-      }
-      parryField.transform.position = transform.position;
-
-      if (Input.GetMouseButtonDown(0))
-      {
-        OnLeftMouseClick?.Invoke(this, EventArgs.Empty);
-      }
+        parried = false;
     }
-  }
-
-  private void FixedUpdate()
-  {
-    movementInputDirectionX = Input.GetAxisRaw("Horizontal");
-    movementInputdirectionY = Input.GetAxisRaw("Vertical");
-    moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
-
-    //keep face direction when idlle
-    if (moveDir != new Vector3(0, 0, 0))
-      lastDir = moveDir;
-    else
-      lastDir = new Vector3(transform.localScale.x, 0, 0);
-    rb.velocity = moveDir * playerSpeed * Time.fixedDeltaTime;
-
-    //facing left right
-    if (movementInputDirectionX > 0)
-      transform.localScale = new Vector2(1, 1);
-    else if (movementInputDirectionX < 0)
-      transform.localScale = new Vector2(-1, 1);
-
-    if (isDashing)
-    {
-      OnRightMouseClick?.Invoke(this, EventArgs.Empty);
-    }
-  }
-
-  private IEnumerator Dash(float dashCD)
-  {
-    canDash = false;
-    rb.velocity = new Vector2(lastDir.x, lastDir.y) * dashSpeed;
-    Debug.Log(rb.velocity);
-    //Vector3 dashPosition = transform.position + lastDir * dashSpeed;
-    //rb.MovePosition(dashPosition);
-    yield return new WaitForSeconds(dashCD);
-    canDash = true;
-    Debug.Log("can dash");
-  }
-
-  private void Player_OnRightMouseClick(object sender, EventArgs e)
-  {
-    if (canDash)
-      StartCoroutine(Dash(dashCoolDown));
-    isDashing = false;
-  }
-
-  public void TakeDamage(int damage)
-  {
-    currentHealth -= damage;
-    healthBar.SetHealth(currentHealth);
-  }
-
-  private void OnTriggerEnter2D(Collider2D collision)
-  {
-    if (collision.CompareTag("PowerUp"))
-    {
-      damage = 10;
-      OnPickUpPowerUps?.Invoke(this, EventArgs.Empty);
-      Destroy(collision.gameObject);
-    }
-  }
 }

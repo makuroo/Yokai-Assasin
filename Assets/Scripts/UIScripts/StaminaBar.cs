@@ -11,27 +11,30 @@ public class StaminaBar : MonoBehaviour
   public static StaminaBar instance;
   public Player player;
 
-  private void Awake()
-  {
-    player = GameObject.Find("chara1").GetComponent<Player>();
-    player.OnStaminaUse += Player_OnStaminaUse;
-    // instance = this;
-  }
+     private void Awake()
+     {
+        player = GameObject.Find("chara1").GetComponent<Player>();
+      // instance = this;
+     }
 
-  private void Player_OnStaminaUse(object sender, Player.OnStaminaUseEventArgs e)
-  {
-    player = GameObject.Find("chara1").GetComponent<Player>();
-    player.OnStaminaUse -= Player_OnStaminaUse;
-    if (player.isDashing == true)
+    private void Start()
     {
-      UseStamina(e.dashStamina);
-    }
-    if (player.parried == true)
-    {
-      UseStamina(e.parryStamina);
+        SetStamina();
+        player.OnStaminaUse += Player_OnStaminaUse;
     }
 
-  }
+    private void Player_OnStaminaUse(object sender, Player.OnStaminaUseEventArgs e)
+    {
+        if (player.isDashing == true)
+        {
+            UseStamina(e.dashStamina);
+            
+        }
+        if (player.parried == true)
+        {
+            UseStamina(e.parryStamina);
+        }
+    }
 
   // private void SetStamina(Player p) {
   //   currentStamina = p.maxStamina;
@@ -47,30 +50,42 @@ public class StaminaBar : MonoBehaviour
   //   staminaBar.value = maxStamina;
   // }
 
-  public void UseStamina(int staminaNeeded)
-  {
-    if (currentStamina >= staminaNeeded)
-    {
-      currentStamina -= staminaNeeded;
-      staminaBar.value = currentStamina;
+      public void UseStamina(int staminaNeeded)
+      {
+        if (currentStamina >= staminaNeeded)
+        {
 
-      StartCoroutine(RegenStamina());
-    }
-    else
-    {
-      Debug.Log("Stamina not enough");
-    }
-  }
+            player.currStamina -= staminaNeeded;
+            SetStamina();
+      
+            StartCoroutine(RegenStamina());
+        }
+        else
+        {
+          Debug.Log("Stamina not enough");
+        }
+      }
 
-  private IEnumerator RegenStamina()
-  {
-    yield return new WaitForSeconds(3);
-    while (currentStamina < maxStamina)
-    {
-      currentStamina += maxStamina / 100;
-      staminaBar.value = currentStamina;
-      yield return new WaitForSeconds(0.001f * Time.deltaTime);
+      private IEnumerator RegenStamina()
+      {
+        
+        yield return new WaitForSeconds(3);
+        while (player.currStamina < player.maxStamina)
+        {
+            player.currStamina += player.maxStamina / player.maxStamina;
+            Debug.Log(player.maxStamina);
+            SetStamina();
+          yield return new WaitForSeconds(0.001f * Time.deltaTime);
 
+        }
+      }
+
+    private void SetStamina()
+    {
+        maxStamina = player.maxStamina;
+        currentStamina = player.currStamina;
+        staminaBar.maxValue = maxStamina;
+        staminaBar.value = currentStamina;
+        
     }
-  }
 }

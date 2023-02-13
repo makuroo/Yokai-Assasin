@@ -36,6 +36,7 @@ public class EnemyProjectile : MonoBehaviour
         if (canBeParried && collision.CompareTag("Projectile") && player.currStamina >= player.parryStamina)
         {
             player.parried = true;
+            player.VerifyParryStaminaUsage();
             canBeParried = false;
             Destroy(collision.gameObject);
             Destroy(gameObject);
