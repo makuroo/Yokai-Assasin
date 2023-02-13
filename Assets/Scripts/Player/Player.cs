@@ -6,10 +6,10 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]private float playerSpeed;
-    [SerializeField]public float dashSpeed = 50f;
-    private float dashCoolDown = 0.5f;
-    private float movementInputDirectionX, movementInputdirectionY;
+  [SerializeField] private float playerSpeed;
+  [SerializeField] public float dashSpeed = 50f;
+  private float dashCoolDown = 0.5f;
+  private float movementInputDirectionX, movementInputdirectionY;
 
     private bool canDash = true;
     public bool shoot = false;
@@ -24,28 +24,47 @@ public class Player : MonoBehaviour
     public int dashStamina = 5;
     public int parryStamina = 5;
 
-    public Animator anim;
-    
-    public Vector3 moveDir;
-    private Vector3 lastDir;
+  public Animator anim;
 
-    private Rigidbody2D rb;
-    
-    public LayerMask projectileLayer;
+  public Vector3 moveDir;
+  private Vector3 lastDir;
 
-    public HealthBar healthBar;
+  private Rigidbody2D rb;
 
     public event EventHandler OnPickUpPowerUps;
     public event EventHandler OnLeftMouseClick;
     public event EventHandler OnRightMouseClick;
     public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
 
-    [SerializeField] private GameObject parryField;
+  public HealthBar healthBar;
 
-   
-    
-    // Start is called before the first frame update
-    void Start()
+  public event EventHandler OnPickUpPowerUps;
+  public event EventHandler OnLeftMouseClick;
+  public event EventHandler OnRightMouseClick;
+
+  [SerializeField] private GameObject parryField;
+
+
+
+  // Start is called before the first frame update
+  void Start()
+  {
+    rb = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
+
+    // setting player health
+    currentHealth = maxHealth;
+    currStamina = maxStamina;
+    healthBar.SetMaxHealth(maxHealth);
+    OnRightMouseClick += Player_OnRightMouseClick;
+  }
+
+
+
+  private void Update()
+  {
+
+    if (EventSystem.current.IsPointerOverGameObject() == false)
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -67,7 +86,20 @@ public class Player : MonoBehaviour
         public int maxStamina, currStamina, dashStamina, parryStamina;
     }
 
-    private void Update()
+    //keep face direction when idlle
+    if (moveDir != new Vector3(0, 0, 0))
+      lastDir = moveDir;
+    else
+      lastDir = new Vector3(transform.localScale.x, 0, 0);
+    rb.velocity = moveDir * playerSpeed * Time.fixedDeltaTime;
+
+    //facing left right
+    if (movementInputDirectionX > 0)
+      transform.localScale = new Vector2(1, 1);
+    else if (movementInputDirectionX < 0)
+      transform.localScale = new Vector2(-1, 1);
+
+    if (isDashing)
     {
 
         if (EventSystem.current.IsPointerOverGameObject() == false)
@@ -100,8 +132,36 @@ public class Player : MonoBehaviour
         }
 
     }
+  }
 
-    private void FixedUpdate()
+  private IEnumerator Dash(float dashCD)
+  {
+    canDash = false;
+    rb.velocity = new Vector2(lastDir.x, lastDir.y) * dashSpeed;
+    Debug.Log(rb.velocity);
+    //Vector3 dashPosition = transform.position + lastDir * dashSpeed;
+    //rb.MovePosition(dashPosition);
+    yield return new WaitForSeconds(dashCD);
+    canDash = true;
+    Debug.Log("can dash");
+  }
+
+  private void Player_OnRightMouseClick(object sender, EventArgs e)
+  {
+    if (canDash)
+      StartCoroutine(Dash(dashCoolDown));
+    isDashing = false;
+  }
+
+  public void TakeDamage(int damage)
+  {
+    currentHealth -= damage;
+    healthBar.SetHealth(currentHealth);
+  }
+
+  private void OnTriggerEnter2D(Collider2D collision)
+  {
+    if (collision.CompareTag("PowerUp"))
     {
         movementInputDirectionX = Input.GetAxisRaw("Horizontal");
         movementInputdirectionY = Input.GetAxisRaw("Vertical");
@@ -162,4 +222,5 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+  }
 }
