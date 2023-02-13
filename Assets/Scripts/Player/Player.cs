@@ -31,10 +31,11 @@ public class Player : MonoBehaviour
 
   private Rigidbody2D rb;
 
-  public event EventHandler OnPickUpPowerUps;
-  public event EventHandler OnLeftMouseClick;
-  public event EventHandler OnRightMouseClick;
   public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
+  public class OnStaminaUseEventArgs : EventArgs
+  {
+    public int maxStamina, currStamina, dashStamina, parryStamina;
+  }
 
   public HealthBar healthBar;
 
@@ -92,25 +93,7 @@ public class Player : MonoBehaviour
         OnLeftMouseClick?.Invoke(this, EventArgs.Empty);
       }
     }
-
-    if (Input.GetMouseButton(1) && currStamina >= 5)
-    {
-      currStamina -= 5;
-      isDashing = true;
-    }
-
-    if (currentHealth <= 0)
-    {
-      Destroy(transform.parent.gameObject);
-    }
-    parryField.transform.position = transform.position;
-
-    if (Input.GetMouseButtonDown(0))
-    {
-      OnLeftMouseClick?.Invoke(this, EventArgs.Empty);
-    }
   }
-
 
   private void FixedUpdate()
   {
