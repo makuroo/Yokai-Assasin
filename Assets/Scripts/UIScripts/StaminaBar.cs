@@ -6,22 +6,46 @@ using UnityEngine.UI;
 public class StaminaBar : MonoBehaviour
 {
   public Slider staminaBar;
-  private int maxStamina = 100;
+  private int maxStamina;
   private int currentStamina;
   public static StaminaBar instance;
+  public Player player;
 
   private void Awake()
   {
-    instance = this;
+    player = GameObject.Find("chara1").GetComponent<Player>();
+    player.OnStaminaUse += Player_OnStaminaUse;
+    // instance = this;
   }
 
-  // Start is called before the first frame update
-  void Start()
+  private void Player_OnStaminaUse(object sender, Player.OnStaminaUseEventArgs e)
   {
-    currentStamina = maxStamina;
-    staminaBar.maxValue = maxStamina;
-    staminaBar.value = maxStamina;
+    player = GameObject.Find("chara1").GetComponent<Player>();
+    player.OnStaminaUse -= Player_OnStaminaUse;
+    if (player.isDashing == true)
+    {
+      UseStamina(e.dashStamina);
+    }
+    if (player.parried == true)
+    {
+      UseStamina(e.parryStamina);
+    }
+
   }
+
+  // private void SetStamina(Player p) {
+  //   currentStamina = p.maxStamina;
+  //   staminaBar.maxValue = p.maxStamina;
+  //   staminaBar.value = p.maxStamina;
+  // }
+
+  // Start is called before the first frame update
+  // void Start()
+  // {
+  //   currentStamina = maxStamina;
+  //   staminaBar.maxValue = maxStamina;
+  //   staminaBar.value = maxStamina;
+  // }
 
   public void UseStamina(int staminaNeeded)
   {

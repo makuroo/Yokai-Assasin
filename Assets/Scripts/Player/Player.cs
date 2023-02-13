@@ -13,11 +13,11 @@ public class Player : MonoBehaviour
 
   private bool canDash = true;
   public bool shoot = false;
-  private bool isDashing = false;
+  public bool isDashing = false;
   public bool parried = false;
 
   public int damage = 2;
-  public int maxHealth =20;
+  public int maxHealth = 20;
   public int currentHealth;
   public int maxStamina;
   public int currStamina;
