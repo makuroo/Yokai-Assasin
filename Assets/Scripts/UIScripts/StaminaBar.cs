@@ -14,7 +14,6 @@ public class StaminaBar : MonoBehaviour
      private void Awake()
      {
         player = GameObject.Find("chara1").GetComponent<Player>();
-      // instance = this;
      }
 
     private void Start()
@@ -35,20 +34,6 @@ public class StaminaBar : MonoBehaviour
             UseStamina(e.parryStamina);
         }
     }
-
-  // private void SetStamina(Player p) {
-  //   currentStamina = p.maxStamina;
-  //   staminaBar.maxValue = p.maxStamina;
-  //   staminaBar.value = p.maxStamina;
-  // }
-
-  // Start is called before the first frame update
-  // void Start()
-  // {
-  //   currentStamina = maxStamina;
-  //   staminaBar.maxValue = maxStamina;
-  //   staminaBar.value = maxStamina;
-  // }
 
       public void UseStamina(int staminaNeeded)
       {
@@ -75,8 +60,7 @@ public class StaminaBar : MonoBehaviour
             player.currStamina += player.maxStamina / player.maxStamina;
             Debug.Log(player.maxStamina);
             SetStamina();
-          yield return new WaitForSeconds(0.001f * Time.deltaTime);
-
+            yield return new WaitForSeconds(50f * Time.deltaTime);
         }
       }
 

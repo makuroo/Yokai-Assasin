@@ -106,14 +106,20 @@ public class Enemy_Action : MonoBehaviour
             facingIndex = 1;
             sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
-            sr.flipX = false;
+            if (transform.localScale.x == 1)
+                sr.flipX = false;
+            else
+                sr.flipX = true;
         }
         else if (angle >= 135 || angle <= -135)
         {
             facingIndex = 1;
             sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
-            sr.flipX = true;
+            if (transform.localScale.x == 1)
+                sr.flipX = true;
+            else
+                sr.flipX = false;
 
         }
         else if (angle < -45 && angle > -135)

@@ -1,44 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
 
-  public GameObject pauseMenu;
-  public HealthBar hb;
-  public GameObject DefeatPanel;
-  public bool isPaused = false;
+    public GameObject pauseMenu;
+    public Player player;
+    public GameObject DefeatPanel;
+    public GameObject VictoryPanel;
+    public bool isPaused = false;
+    private GameObject enemies;
   // Start is called before the first frame update
   void Start()
   {
+        player = GameObject.FindObjectOfType<Player>();
     if (Time.timeScale == 0)
     {
       Time.timeScale = 1;
     }
   }
 
-  public void Restart()
-  {
-    SceneManager.LoadScene("Level1");
-
-  }
-
-  public void GoToMainMenu()
-  {
-    SceneManager.LoadScene("ManMenu");
-  }
-
   // Update is called once per frame
   private void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Escape))
+        enemies = GameObject.FindGameObjectWithTag("Enemy");
+        if(enemies == null)
+        {
+            VictoryPanel.SetActive(true);
+        }
+    if (Input.GetKeyDown(KeyCode.Escape) && player.currentHealth > 0)
     {
       CheckIsPaused();
     }
-    if (hb.slider.value <= 0)
+        
+    if (player.currentHealth <= 0)
     {
+          
       DefeatPanel.SetActive(true);
     }
 
@@ -65,6 +65,16 @@ public class PauseMenu : MonoBehaviour
     else
       ResumeGame();
   }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("Level1");
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("ManMenu");
+    }
 
 }
 

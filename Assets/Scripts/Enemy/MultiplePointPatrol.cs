@@ -61,14 +61,20 @@ public class MultiplePointPatrol : MonoBehaviour
             enemy.facingIndex = 1;
             enemy.sr.sprite = enemy.faceDirectionSprites[enemy.facingIndex];
             enemy.anim.SetInteger("faceDir", enemy.facingIndex);
-            enemy.sr.flipX = false;
+            if (enemy.transform.localScale.x == 1)
+                enemy.sr.flipX = false;
+            else
+                enemy.sr.flipX = true;
             lastDirection = FacingDirection.left;
         }
         else if (target.position.x > transform.position.x && (Mathf.Atan(tan) * Mathf.Rad2Deg <= -55f || Mathf.Atan(tan) * Mathf.Rad2Deg >= 55f) && Mathf.Abs(target.position.y - transform.position.y) < 0.8f)
         {
             enemy.facingIndex = 1;
             //sr.sprite = faceDirectionSprites[facingIndex];
-            enemy.sr.flipX = true;
+            if (enemy.transform.localScale.x == 1)
+                enemy.sr.flipX = true;
+            else
+                enemy.sr.flipX = false;
             enemy.anim.SetInteger("faceDir", enemy.facingIndex);
             lastDirection = FacingDirection.right;
         }
