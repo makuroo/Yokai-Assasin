@@ -161,6 +161,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 762019063258523448}
     m_Modifications:
+    - target: {fileID: 7457256224634610584, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457256224634610584, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0045
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457256224634610584, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457256224634610584, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
     - target: {fileID: 7457256224634610585, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
       propertyPath: player
       value: 
@@ -177,6 +193,30 @@ PrefabInstance:
       propertyPath: sprite.Array.data[1]
       value: 
       objectReference: {fileID: -3731394631933408049, guid: f192bde2587d1c049886afa962fc2a5d, type: 3}
+    - target: {fileID: 7457256224634610585, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: animController.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457256224634610585, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: animController.Array.data[0]
+      value: 
+      objectReference: {fileID: 9100000, guid: 8c84e6f475becea419ceb171831def79, type: 2}
+    - target: {fileID: 7457256224634610585, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: animController.Array.data[1]
+      value: 
+      objectReference: {fileID: 9100000, guid: 652e0e4dc8c083144bda4603f429a2da, type: 2}
+    - target: {fileID: 7457256224634610586, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: d73e6fc998cfcbb46bf7dec7f800c23d, type: 3}
+    - target: {fileID: 7457256224634610586, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457256224634610586, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9317504
+      objectReference: {fileID: 0}
     - target: {fileID: 7457256224951114053, guid: 4d5d1821e2b93f948a5496841e63e86b, type: 3}
       propertyPath: m_RootOrder
       value: 0

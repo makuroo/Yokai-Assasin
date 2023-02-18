@@ -19,10 +19,10 @@ public class Player : MonoBehaviour
   public int damage = 2;
   public int maxHealth = 20;
   public int currentHealth;
-  public int maxStamina;
-  public int currStamina;
-  public int dashStamina = 5;
-  public int parryStamina = 5;
+  public float maxStamina;
+  public float currStamina;
+  public float dashStamina = 5;
+  public float parryStamina = 5;
 
   public Animator anim;
 
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
   public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
   public class OnStaminaUseEventArgs : EventArgs
   {
-    public int maxStamina, currStamina, dashStamina, parryStamina;
+    public float maxStamina, currStamina, dashStamina, parryStamina;
   }
 
   public HealthBar healthBar;

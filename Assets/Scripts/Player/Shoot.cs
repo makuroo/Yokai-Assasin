@@ -6,6 +6,7 @@ public class Shoot : MonoBehaviour
 {
     public GameObject projectile;
     [SerializeField] private Player player;
+    [SerializeField]private Transform playerTransform;
     private float cooldown = 0f;
     public Vector3 mousePos;
     public Camera mainCam;
@@ -23,8 +24,9 @@ public class Shoot : MonoBehaviour
         anim = projectile.GetComponent<Animator>();
         sr = player.GetComponent<SpriteRenderer>();
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        player.OnPickUpPowerUps += Player_OnPickUpPowerUps;
+        //player.OnPickUpPowerUps += Player_OnPickUpPowerUps;
         player.OnLeftMouseClick += Player_OnLeftMouseClick;
+        
     }
 
     private void Player_OnLeftMouseClick(object sender, System.EventArgs e)
@@ -64,14 +66,14 @@ public class Shoot : MonoBehaviour
 
     private void InstantiateProjectile()
     {
-        if ((Mathf.Abs(direction.x) > 0.1 || Mathf.Abs(direction.y) > 0.1))
+        if ((Mathf.Abs(direction.x) > .5f || Mathf.Abs(direction.y) > .5f))
         {
             if (cooldown <= 0)
             {
                 player.shoot = false;
                 tempMousePos = mousePos;
                 cooldown = 0.5f;
-                Instantiate(projectile, transform.position, transform.rotation);
+                Instantiate(projectile, playerTransform.position, transform.rotation);
                 specialCount--;
             }
         }

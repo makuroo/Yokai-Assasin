@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class StaminaBar : MonoBehaviour
 {
   public Slider staminaBar;
-  private int maxStamina;
-  private int currentStamina;
+  private float maxStamina;
+  private float currentStamina;
   public static StaminaBar instance;
   public Player player;
+    private float lastStaminaUse;
 
      private void Awake()
      {
@@ -35,15 +36,27 @@ public class StaminaBar : MonoBehaviour
         }
     }
 
-      public void UseStamina(int staminaNeeded)
+    private void Update()
+    {
+        if (lastStaminaUse == 0 || lastStaminaUse < 3)
+            lastStaminaUse += Time.deltaTime;
+
+        if (lastStaminaUse >= 3f && player.currStamina < maxStamina)
+        {
+            StartCoroutine(RegenStamina());
+            lastStaminaUse = 0;
+        }
+        Debug.Log(lastStaminaUse);
+    }
+
+    public void UseStamina(float staminaNeeded)
       {
         if (currentStamina >= staminaNeeded)
         {
 
             player.currStamina -= staminaNeeded;
             SetStamina();
-      
-            StartCoroutine(RegenStamina());
+            lastStaminaUse = 0;
         }
         else
         {
@@ -53,14 +66,13 @@ public class StaminaBar : MonoBehaviour
 
       private IEnumerator RegenStamina()
       {
-        
-        yield return new WaitForSeconds(3);
-        while (player.currStamina < player.maxStamina)
+         
+        while (player.currStamina < player.maxStamina )
         {
-            player.currStamina += player.maxStamina / player.maxStamina;
+            yield return new WaitForSeconds(1f);
+            player.currStamina += 10 / player.maxStamina;
             Debug.Log(player.maxStamina);
             SetStamina();
-            yield return new WaitForSeconds(50f * Time.deltaTime);
         }
       }
 

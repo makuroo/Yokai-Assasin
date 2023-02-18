@@ -76,7 +76,6 @@ public class Enemy_Action : MonoBehaviour
         if (collision.transform.CompareTag("Projectile"))
         {
             playerScript.TakeDamage(playerScript.damage);
-            Debug.Log(hp);
         }
     }
 
@@ -85,7 +84,6 @@ public class Enemy_Action : MonoBehaviour
         if (collision.transform.CompareTag("Projectile"))
         {
             hp -= playerScript.damage;
-            Debug.Log(hp);
             Destroy(collision.gameObject);
         }
     }
@@ -107,33 +105,42 @@ public class Enemy_Action : MonoBehaviour
             sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
             if (transform.localScale.x == 1)
+            {
                 sr.flipX = false;
+            }
             else
+            {
+                Debug.Log("face left");
                 sr.flipX = true;
+            }
+                
         }
         else if (angle >= 135 || angle <= -135)
         {
+            Debug.Log(angle);
             facingIndex = 1;
             sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
             if (transform.localScale.x == 1)
+            {
                 sr.flipX = true;
+            }
             else
+            {
+                Debug.Log("test");
                 sr.flipX = false;
+            }
 
         }
         else if (angle < -45 && angle > -135)
         {
             facingIndex = 2;
-            // sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
             sr.flipX = false;
-            Debug.Log(3);
         }
         else if (angle > 45 && angle < 135)
         {
             facingIndex = 0;
-            //sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
             sr.flipX = false;
         }

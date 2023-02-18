@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
         enemies = GameObject.FindGameObjectWithTag("Enemy");
         if(enemies == null)
         {
+            Time.timeScale = 0;
             VictoryPanel.SetActive(true);
         }
     if (Input.GetKeyDown(KeyCode.Escape) && player.currentHealth > 0)
