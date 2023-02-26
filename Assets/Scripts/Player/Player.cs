@@ -43,8 +43,6 @@ public class Player : MonoBehaviour
   public event EventHandler OnLeftMouseClick;
   public event EventHandler OnRightMouseClick;
 
-  [SerializeField] private GameObject parryField;
-
 
     private void Awake()
     {
@@ -78,7 +76,6 @@ public class Player : MonoBehaviour
             {
                 Destroy(transform.parent.gameObject);
             }
-            parryField.transform.position = transform.position;
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -118,9 +115,6 @@ public class Player : MonoBehaviour
         VerifyDashStaminaUsage();
         canDash = false;
         rb.velocity = new Vector2(lastDir.x, lastDir.y) * dashSpeed;
-        Debug.Log(rb.velocity);
-        //Vector3 dashPosition = transform.position + lastDir * dashSpeed;
-        //rb.MovePosition(dashPosition);
         yield return new WaitForSeconds(dashCD);
         canDash = true;
         Debug.Log("can dash");

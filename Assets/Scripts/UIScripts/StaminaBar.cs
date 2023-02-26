@@ -46,14 +46,13 @@ public class StaminaBar : MonoBehaviour
             StartCoroutine(RegenStamina());
             lastStaminaUse = 0;
         }
-        Debug.Log(lastStaminaUse);
     }
 
     public void UseStamina(float staminaNeeded)
       {
         if (currentStamina >= staminaNeeded)
         {
-
+            Debug.Log(player.currStamina);
             player.currStamina -= staminaNeeded;
             SetStamina();
             lastStaminaUse = 0;
@@ -69,9 +68,9 @@ public class StaminaBar : MonoBehaviour
          
         while (player.currStamina < player.maxStamina )
         {
-            yield return new WaitForSeconds(1f);
-            player.currStamina += 10 / player.maxStamina;
-            Debug.Log(player.maxStamina);
+            yield return new WaitForSeconds(.1f);
+            player.currStamina += 50 / player.maxStamina;
+            
             SetStamina();
         }
       }

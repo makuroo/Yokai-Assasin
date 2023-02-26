@@ -110,14 +110,12 @@ public class Enemy_Action : MonoBehaviour
             }
             else
             {
-                Debug.Log("face left");
                 sr.flipX = true;
             }
                 
         }
         else if (angle >= 135 || angle <= -135)
         {
-            Debug.Log(angle);
             facingIndex = 1;
             sr.sprite = faceDirectionSprites[facingIndex];
             anim.SetInteger("attackDir", facingIndex);
@@ -127,7 +125,6 @@ public class Enemy_Action : MonoBehaviour
             }
             else
             {
-                Debug.Log("test");
                 sr.flipX = false;
             }
 
