@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
 
   private Rigidbody2D rb;
 
+  [SerializeField] private AudioManager audioManager;
+
   public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
   public class OnStaminaUseEventArgs : EventArgs
   {
@@ -38,9 +40,6 @@ public class Player : MonoBehaviour
   }
 
   public HealthBar healthBar;
-
-  public AudioClip footstep;
-  AudioSource audioSource;
 
   public event EventHandler OnPickUpPowerUps;
   public event EventHandler OnLeftMouseClick;
@@ -51,7 +50,7 @@ public class Player : MonoBehaviour
   {
     rb = GetComponent<Rigidbody2D>();
     anim = GetComponent<Animator>();
-    audioSource = GetComponent<AudioSource>();
+    audioManager = FindObjectOfType<AudioManager>();
 
     // setting player health
     currentHealth = maxHealth;
@@ -98,7 +97,8 @@ public class Player : MonoBehaviour
     //keep face direction when idlle
     if (moveDir != new Vector3(0, 0, 0))
     {
-      //   audioSource.PlayOneShot(footstep, 0.7f);
+            
+      audioManager.Play("FootStep");
       lastDir = moveDir;
     }
     else
