@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
     if (moveDir != new Vector3(0, 0, 0))
     {
             
-      audioManager.Play("FootStep");
+      audioManager.PlayOneShot("FootStep");
       lastDir = moveDir;
     }
     else
