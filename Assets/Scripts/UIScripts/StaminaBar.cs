@@ -89,4 +89,5 @@ public class StaminaBar : MonoBehaviour
         staminaBar.value = currentStamina;
         fill.color = gradient.Evaluate(staminaBar.normalizedValue);
       }
+    
 }
