@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
     //keep face direction when idlle
     if (moveDir != new Vector3(0, 0, 0))
     {
-            
+
       audioManager.PlayOneShot("FootStep");
       lastDir = moveDir;
     }
@@ -138,6 +138,8 @@ public class Player : MonoBehaviour
 
   public void TakeDamage(int damage)
   {
+    FindObjectOfType<AudioManager>().Play("hurt");
+    FindObjectOfType<AudioManager>().Play("EnemyRangeAttackSound");
     currentHealth -= damage;
     healthBar.SetHealth(currentHealth);
   }
@@ -164,6 +166,7 @@ public class Player : MonoBehaviour
   {
     if (parried)
     {
+      FindObjectOfType<AudioManager>().Play("parried");
       OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
     }
     parried = false;

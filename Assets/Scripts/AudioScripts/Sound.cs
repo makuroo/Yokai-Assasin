@@ -5,8 +5,15 @@ using UnityEngine;
 public class Sound
 {
   public string name;
-
   public AudioClip clip;
+
+  public enum TypeAudio
+  {
+    BGM = 0,
+    SFX = 1
+  }
+
+  public TypeAudio audioType;
 
   [Range(0f, 1f)]
   public float volume;

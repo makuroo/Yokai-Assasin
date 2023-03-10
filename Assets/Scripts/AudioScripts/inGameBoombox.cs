@@ -14,7 +14,7 @@ public class inGameBoombox : MonoBehaviour
   IEnumerator playSoundAfterThreeSeconds()
   {
     yield return new WaitForSeconds(3);
-    FindObjectOfType<AudioManager>().Play("InBattle");
+    FindObjectOfType<AudioManager>().Play("NotInBattle");
   }
 
 }
