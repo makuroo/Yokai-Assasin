@@ -45,9 +45,4 @@ public class Projectiles : MonoBehaviour
         damage = player.damage;
         anim = GetComponentInChildren<Animator>();
     }
-
-    public void Test()
-    {
-        Debug.Log("test");
-    }
 }

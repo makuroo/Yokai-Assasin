@@ -22878,6 +22878,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1446299951}
     - target: {fileID: 1977286821839962750, guid: 5cdaa025c4420ae4096c876c1aadeca4, type: 3}
+      propertyPath: sensor
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1977286821839962750, guid: 5cdaa025c4420ae4096c876c1aadeca4, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1271059075}
@@ -22927,6 +22931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1977286821839962751, guid: 5cdaa025c4420ae4096c876c1aadeca4, type: 3}
+    - {fileID: 1100338845853829160, guid: 5cdaa025c4420ae4096c876c1aadeca4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
