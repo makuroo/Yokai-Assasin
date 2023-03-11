@@ -21,31 +21,40 @@ public class AudioManager : MonoBehaviour
 
   void Start()
   {
-    if(SceneManager.GetActiveScene().buildIndex == 0)
-        Play("BackgroundMusic");
+    if (SceneManager.GetActiveScene().buildIndex == 0)
+      Play("BackgroundMusic");
   }
 
   // Update is called once per frame
   public void Play(string name)
   {
     Sound s = Array.Find(sounds, sound => sound.name == name);
-        if ( s.name == "BackgroundMusic")
-        {
-            s.source.loop = true;
-        }
-        else
-        {
-            s.source.loop = false;
-        }
-        Debug.Log(s.name);
-        s.source.Play();
+    // if ( s.name == "BackgroundMusic")
+    // {
+    //     s.source.loop = true;
+    // }
+    // else
+    // {
+    //     s.source.loop = false;
+    // }
+    // Debug.Log(s.name);
+    // s.source.Play();
+    if (s.audioType == 0)
+    {
+      s.source.loop = true;
+    }
+    else
+    {
+      s.source.loop = false;
+    }
+    s.source.Play();
   }
 
-    public void PlayOneShot(string name)
-    {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if(s.source.isPlaying == false)
-            s.source.PlayOneShot(s.clip);
-    }
+  public void PlayOneShot(string name)
+  {
+    Sound s = Array.Find(sounds, sound => sound.name == name);
+    if (s.source.isPlaying == false)
+      s.source.PlayOneShot(s.clip);
+  }
 
 }

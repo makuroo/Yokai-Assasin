@@ -4173,21 +4173,25 @@ MonoBehaviour:
   sounds:
   - name: BackgroundMusic
     clip: {fileID: 8300000, guid: bb017c084e280e84da9ab26bf36f7e40, type: 3}
+    audioType: 0
     volume: 0.692
     pitch: 1.13
     source: {fileID: 0}
   - name: ClickSound
     clip: {fileID: 8300000, guid: a1778f2042c000d4d8a2310ffb22e0d6, type: 3}
+    audioType: 1
     volume: 1
     pitch: 0.68
     source: {fileID: 0}
   - name: HoverSound
     clip: {fileID: 8300000, guid: 664e9d2b9d1e38a4fbd802211bc75065, type: 3}
+    audioType: 1
     volume: 1
     pitch: 0.77
     source: {fileID: 0}
   - name: StartGameSound
     clip: {fileID: 8300000, guid: 7161434d0a228b642a8b7b7534467718, type: 3}
+    audioType: 1
     volume: 1
     pitch: 0.77
     source: {fileID: 0}
