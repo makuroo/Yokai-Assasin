@@ -7,12 +7,12 @@ public class Enemy_Action : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private float speed;
 
-    [SerializeField]private int hp = 20;
-    [SerializeField]private int damage = 2;
+    [SerializeField] private int hp = 20;
+    [SerializeField] private int damage = 2;
 
     private Vector2 faceDir;
     private float angle;
-    
+
     public int facingIndex;
     public Sprite[] faceDirectionSprites;
     public SpriteRenderer sr;
@@ -54,11 +54,11 @@ public class Enemy_Action : MonoBehaviour
         {
             damage = 3;
         }
-        if(playerScript.currentHealth < damage)
+        if (playerScript.currentHealth < damage)
         {
             meleeSensor.canMelee = false;
         }
-       
+
         anim.SetBool("canMelee", meleeSensor.canMelee);
     }
 
@@ -112,7 +112,7 @@ public class Enemy_Action : MonoBehaviour
             {
                 sr.flipX = true;
             }
-                
+
         }
         else if (angle >= 135 || angle <= -135)
         {

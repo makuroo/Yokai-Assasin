@@ -6,169 +6,169 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
-  [SerializeField] private float playerSpeed;
-  [SerializeField] public float dashSpeed = 50f;
-  private float dashCoolDown = 0.5f;
-  private float movementInputDirectionX, movementInputdirectionY;
+    [SerializeField] private float playerSpeed;
+    [SerializeField] public float dashSpeed = 50f;
+    private float dashCoolDown = 0.5f;
+    private float movementInputDirectionX, movementInputdirectionY;
 
-  private bool canDash = true;
-  public bool shoot = false;
-  public bool isDashing = false;
-  public bool parried = false;
+    private bool canDash = true;
+    public bool shoot = false;
+    public bool isDashing = false;
+    public bool parried = false;
 
-  public int damage = 2;
-  public int maxHealth = 20;
-  public int currentHealth;
-  public float maxStamina;
-  public float currStamina;
-  public float dashStamina = 5;
-  public float parryStamina = 5;
+    public int damage = 2;
+    public int maxHealth = 20;
+    public int currentHealth;
+    public float maxStamina;
+    public float currStamina;
+    public float dashStamina = 5;
+    public float parryStamina = 5;
 
-  public Animator anim;
+    public Animator anim;
 
-  public Vector3 moveDir;
-  private Vector3 lastDir;
+    public Vector3 moveDir;
+    private Vector3 lastDir;
 
-  private Rigidbody2D rb;
+    private Rigidbody2D rb;
 
-  [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioManager audioManager;
 
-  public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
-  public class OnStaminaUseEventArgs : EventArgs
-  {
-    public float maxStamina, currStamina, dashStamina, parryStamina;
-  }
-
-  public HealthBar healthBar;
-
-  public event EventHandler OnPickUpPowerUps;
-  public event EventHandler OnLeftMouseClick;
-  public event EventHandler OnRightMouseClick;
-
-
-  private void Awake()
-  {
-    rb = GetComponent<Rigidbody2D>();
-    anim = GetComponent<Animator>();
-    audioManager = FindObjectOfType<AudioManager>();
-
-    // setting player health
-    currentHealth = maxHealth;
-    currStamina = maxStamina;
-    healthBar.SetMaxHealth(maxHealth);
-  }
-
-  // Start is called before the first frame update
-  void Start()
-  {
-    OnRightMouseClick += Player_OnRightMouseClick;
-  }
-
-  private void Update()
-  {
-    if (EventSystem.current.IsPointerOverGameObject() == false)
+    public event EventHandler<OnStaminaUseEventArgs> OnStaminaUse;
+    public class OnStaminaUseEventArgs : EventArgs
     {
-      if (Input.GetMouseButtonDown(1) && currStamina >= dashStamina && isDashing == false)
-      {
-        isDashing = true;
-        FindObjectOfType<AudioManager>().Play("DashSound");
-      }
-
-      VerifyParryStaminaUsage();
-
-      if (currentHealth <= 0)
-      {
-        Destroy(transform.parent.gameObject);
-      }
-
-      if (Input.GetMouseButtonDown(0))
-      {
-        OnLeftMouseClick?.Invoke(this, EventArgs.Empty);
-      }
+        public float maxStamina, currStamina, dashStamina, parryStamina;
     }
-  }
 
-  private void FixedUpdate()
-  {
-    movementInputDirectionX = Input.GetAxisRaw("Horizontal");
-    movementInputdirectionY = Input.GetAxisRaw("Vertical");
-    moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
+    public HealthBar healthBar;
 
-    //keep face direction when idlle
-    if (moveDir != new Vector3(0, 0, 0))
+    public event EventHandler OnPickUpPowerUps;
+    public event EventHandler OnLeftMouseClick;
+    public event EventHandler OnRightMouseClick;
+
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        audioManager = FindObjectOfType<AudioManager>();
+
+        // setting player health
+        currentHealth = maxHealth;
+        currStamina = maxStamina;
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        OnRightMouseClick += Player_OnRightMouseClick;
+    }
+
+    private void Update()
+    {
+        if (EventSystem.current.IsPointerOverGameObject() == false)
+        {
+            if (Input.GetMouseButtonDown(1) && currStamina >= dashStamina && isDashing == false)
+            {
+                isDashing = true;
+                FindObjectOfType<AudioManager>().Play("DashSound");
+            }
+
+            VerifyParryStaminaUsage();
+
+            if (currentHealth <= 0)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnLeftMouseClick?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        movementInputDirectionX = Input.GetAxisRaw("Horizontal");
+        movementInputdirectionY = Input.GetAxisRaw("Vertical");
+        moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
+
+        //keep face direction when idlle
+        if (moveDir != new Vector3(0, 0, 0))
+        {
+
+            audioManager.PlayOneShot("FootStep");
+            lastDir = moveDir;
+        }
+        else
+            lastDir = new Vector3(transform.localScale.x, 0, 0);
+        rb.velocity = moveDir * playerSpeed * Time.fixedDeltaTime;
+
+        //facing left right
+        if (movementInputDirectionX > 0)
+            transform.localScale = new Vector2(1, 1);
+        else if (movementInputDirectionX < 0)
+            transform.localScale = new Vector2(-1, 1);
+
+        if (isDashing)
+        {
+            OnRightMouseClick?.Invoke(this, EventArgs.Empty);
+
+        }
+    }
+
+    private IEnumerator Dash(float dashCD)
+    {
+        VerifyDashStaminaUsage();
+        canDash = false;
+        rb.velocity = new Vector2(lastDir.x, lastDir.y) * dashSpeed;
+        yield return new WaitForSeconds(dashCD);
+        canDash = true;
+        Debug.Log("can dash");
+    }
+
+    private void Player_OnRightMouseClick(object sender, EventArgs e)
     {
 
-      audioManager.PlayOneShot("FootStep");
-      lastDir = moveDir;
+        if (canDash)
+            StartCoroutine(Dash(dashCoolDown));
+        isDashing = false;
     }
-    else
-      lastDir = new Vector3(transform.localScale.x, 0, 0);
-    rb.velocity = moveDir * playerSpeed * Time.fixedDeltaTime;
 
-    //facing left right
-    if (movementInputDirectionX > 0)
-      transform.localScale = new Vector2(1, 1);
-    else if (movementInputDirectionX < 0)
-      transform.localScale = new Vector2(-1, 1);
-
-    if (isDashing)
+    public void TakeDamage(int damage)
     {
-      OnRightMouseClick?.Invoke(this, EventArgs.Empty);
-
+        FindObjectOfType<AudioManager>().Play("hurt");
+        FindObjectOfType<AudioManager>().Play("EnemyRangeAttackSound");
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
     }
-  }
 
-  private IEnumerator Dash(float dashCD)
-  {
-    VerifyDashStaminaUsage();
-    canDash = false;
-    rb.velocity = new Vector2(lastDir.x, lastDir.y) * dashSpeed;
-    yield return new WaitForSeconds(dashCD);
-    canDash = true;
-    Debug.Log("can dash");
-  }
-
-  private void Player_OnRightMouseClick(object sender, EventArgs e)
-  {
-
-    if (canDash)
-      StartCoroutine(Dash(dashCoolDown));
-    isDashing = false;
-  }
-
-  public void TakeDamage(int damage)
-  {
-    FindObjectOfType<AudioManager>().Play("hurt");
-    FindObjectOfType<AudioManager>().Play("EnemyRangeAttackSound");
-    currentHealth -= damage;
-    healthBar.SetHealth(currentHealth);
-  }
-
-  private void OnTriggerEnter2D(Collider2D collision)
-  {
-    if (collision.CompareTag("PowerUp"))
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-      FindObjectOfType<AudioManager>().Play("PowerUp");
-      damage = 10;
-      OnPickUpPowerUps?.Invoke(this, EventArgs.Empty);
-      Destroy(collision.gameObject);
+        if (collision.CompareTag("PowerUp"))
+        {
+            FindObjectOfType<AudioManager>().Play("PowerUp");
+            damage = 10;
+            OnPickUpPowerUps?.Invoke(this, EventArgs.Empty);
+            Destroy(collision.gameObject);
+        }
     }
-  }
-  private void VerifyDashStaminaUsage()
-  {
-    if (isDashing)
+    private void VerifyDashStaminaUsage()
     {
-      OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+        if (isDashing)
+        {
+            OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+        }
     }
-  }
 
-  public void VerifyParryStaminaUsage()
-  {
-    if (parried)
+    public void VerifyParryStaminaUsage()
     {
-      FindObjectOfType<AudioManager>().Play("parried");
-      OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+        if (parried)
+        {
+            FindObjectOfType<AudioManager>().Play("parried");
+            OnStaminaUse?.Invoke(this, new OnStaminaUseEventArgs { maxStamina = maxStamina, currStamina = currStamina, dashStamina = dashStamina, parryStamina = parryStamina });
+        }
+        parried = false;
     }
-    parried = false;
-  }
 }

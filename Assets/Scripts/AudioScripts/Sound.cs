@@ -4,21 +4,21 @@ using UnityEngine;
 [System.Serializable]
 public class Sound
 {
-  public string name;
-  public AudioClip clip;
+    public string name;
+    public AudioClip clip;
 
-  public enum TypeAudio
-  {
-    BGM = 0,
-    SFX = 1
-  }
+    public enum TypeAudio
+    {
+        BGM = 0,
+        SFX = 1
+    }
 
-  public TypeAudio audioType;
+    public TypeAudio audioType;
 
-  [Range(0f, 1f)]
-  public float volume;
-  [Range(.1f, 3f)]
-  public float pitch;
+    [Range(0f, 1f)]
+    public float volume;
+    [Range(.1f, 3f)]
+    public float pitch;
 
-  public AudioSource source;
+    public AudioSource source;
 }

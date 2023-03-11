@@ -33,11 +33,12 @@ public class EnemyProjectile : MonoBehaviour
             player.VerifyParryStaminaUsage();
             collision.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Parry");
             collision.GetComponent<CircleCollider2D>().enabled = false;
-            Destroy(collision.gameObject,.1f);
+            Destroy(collision.gameObject, .1f);
             Destroy(gameObject);
         }
 
-        if (collision.gameObject.CompareTag("Player")){
+        if (collision.gameObject.CompareTag("Player"))
+        {
             collision.GetComponent<Player>().TakeDamage(damage);
             Destroy(gameObject);
         }

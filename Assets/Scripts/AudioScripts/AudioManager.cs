@@ -2,59 +2,79 @@ using UnityEngine.Audio;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
-  public Sound[] sounds;
-  // Start is called before the first frame update
-  private void Awake()
-  {
-    foreach (Sound s in sounds)
+    public Sound[] sounds;
+    [SerializeField] private Slider bgmSlider, sfxSlider;
+
+    // Start is called before the first frame update
+    private void Awake()
     {
-      s.source = gameObject.AddComponent<AudioSource>();
-      s.source.clip = s.clip;
-
-      s.source.volume = s.volume;
-      s.source.pitch = s.pitch;
+        foreach (Sound s in sounds)
+        {
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+            if (s.audioType == 0)
+            {
+                s.volume = bgmSlider.value;
+            }
+            else
+            {
+                s.volume = sfxSlider.value;
+            }
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+        }
     }
-  }
 
-  void Start()
-  {
-    if (SceneManager.GetActiveScene().buildIndex == 0)
-      Play("BackgroundMusic");
-  }
-
-  // Update is called once per frame
-  public void Play(string name)
-  {
-    Sound s = Array.Find(sounds, sound => sound.name == name);
-    // if ( s.name == "BackgroundMusic")
-    // {
-    //     s.source.loop = true;
-    // }
-    // else
-    // {
-    //     s.source.loop = false;
-    // }
-    // Debug.Log(s.name);
-    // s.source.Play();
-    if (s.audioType == 0)
+    void Start()
     {
-      s.source.loop = true;
+        bgmSlider.value = PlayerPrefs.GetFloat("bgmVolume", 1f);
+        sfxSlider.value = PlayerPrefs.GetFloat("sfxVolume", 1f);
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            Play("BackgroundMusic");
     }
-    else
+
+    // Update is called once per frame
+    public void Play(string name)
     {
-      s.source.loop = false;
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+
+        if (s.audioType == 0)
+        {
+            s.source.loop = true;
+        }
+        else
+        {
+            s.source.loop = false;
+        }
+        s.source.Play();
     }
-    s.source.Play();
-  }
 
-  public void PlayOneShot(string name)
-  {
-    Sound s = Array.Find(sounds, sound => sound.name == name);
-    if (s.source.isPlaying == false)
-      s.source.PlayOneShot(s.clip);
-  }
+    public void PlayOneShot(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s.source.isPlaying == false)
+            s.source.PlayOneShot(s.clip);
+    }
 
+    public void setVolume()
+    {
+        foreach (Sound s in sounds)
+        {
+            if (s.audioType == 0)
+            {
+                s.volume = bgmSlider.value;
+                PlayerPrefs.SetFloat("bgmVolume", s.volume);
+            }
+            else
+            {
+                s.volume = sfxSlider.value;
+                PlayerPrefs.SetFloat("sfxVolume", s.volume);
+            }
+            s.source.volume = s.volume;
+        }
+    }
 }

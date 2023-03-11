@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MultiplePointPatrol : MonoBehaviour
 {
-    private enum FacingDirection{
+    private enum FacingDirection
+    {
         back,
         right,
         left,
@@ -15,7 +16,7 @@ public class MultiplePointPatrol : MonoBehaviour
     public Transform[] patrolPoints;
     public float waitTime;
     private int currentPointIndex = 0;
-    [SerializeField]private bool once = false;
+    [SerializeField] private bool once = false;
     private Sensor sensor;
     private Enemy_Action enemy;
     private float diffX;
@@ -43,9 +44,9 @@ public class MultiplePointPatrol : MonoBehaviour
             diffX = transform.position.x - target.position.x;
             diffY = transform.position.y - target.position.y;
             tan = diffX / diffY;
-            transform.position = Vector2.MoveTowards(transform.position, patrolPoints[currentPointIndex].position, speed * sensor.inRange * Time.deltaTime);        
+            transform.position = Vector2.MoveTowards(transform.position, patrolPoints[currentPointIndex].position, speed * sensor.inRange * Time.deltaTime);
         }
-        else if(transform.position == patrolPoints[currentPointIndex].position)
+        else if (transform.position == patrolPoints[currentPointIndex].position)
         {
             stop = true;
             if (once == false)
@@ -86,7 +87,7 @@ public class MultiplePointPatrol : MonoBehaviour
             enemy.sr.flipX = false;
             lastDirection = FacingDirection.back;
         }
-        else if(target.position.y < transform.position.y && (Mathf.Atan(tan) * Mathf.Rad2Deg > -55f || Mathf.Atan(tan) * Mathf.Rad2Deg < 55f))
+        else if (target.position.y < transform.position.y && (Mathf.Atan(tan) * Mathf.Rad2Deg > -55f || Mathf.Atan(tan) * Mathf.Rad2Deg < 55f))
         {
             enemy.facingIndex = 0;
             //sr.sprite = faceDirectionSprites[facingIndex];
@@ -133,5 +134,5 @@ public class MultiplePointPatrol : MonoBehaviour
         }
         once = false;
     }
-        
+
 }

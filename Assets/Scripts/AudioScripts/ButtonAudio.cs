@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ButtonAudio : MonoBehaviour
 {
-  // Start is called before the first frame update
-  public void clickSound()
-  {
-    FindObjectOfType<AudioManager>().Play("ClickSound");
-  }
+    // Start is called before the first frame update
+    public void clickSound()
+    {
+        FindObjectOfType<AudioManager>().Play("ClickSound");
+    }
 }

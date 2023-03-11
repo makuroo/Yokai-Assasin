@@ -17,10 +17,11 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(index == 0)
+        if (index == 0)
         {
             prevButton.gameObject.SetActive(false);
-        }else if(index == texture.Length-1)
+        }
+        else if (index == texture.Length - 1)
         {
             nextButton.gameObject.SetActive(false);
         }
@@ -29,26 +30,26 @@ public class Tutorial : MonoBehaviour
             prevButton.gameObject.SetActive(true);
             nextButton.gameObject.SetActive(true);
         }
-        
+
     }
 
     public void NextSlide()
     {
-        if(index != texture.Length)
+        if (index != texture.Length)
         {
             index++;
             GetComponent<RawImage>().texture = texture[index];
         }
-            
+
     }
     public void PrevSlide()
     {
-        if(index != 0)
+        if (index != 0)
         {
             index--;
             GetComponent<RawImage>().texture = texture[index];
         }
-            
+
         Debug.Log(index);
     }
 
