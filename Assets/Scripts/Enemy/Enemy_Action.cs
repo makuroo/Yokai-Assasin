@@ -4,142 +4,143 @@ using UnityEngine;
 
 public class Enemy_Action : MonoBehaviour
 {
-    [SerializeField] private GameObject projectile;
-    [SerializeField] private float speed;
+  [SerializeField] private GameObject projectile;
+  [SerializeField] private float speed;
 
-    [SerializeField] private int hp = 20;
-    [SerializeField] private int damage = 2;
+  [SerializeField] private int hp = 20;
+  [SerializeField] private int damage = 2;
 
-    private Vector2 faceDir;
-    private float angle;
+  private Vector2 faceDir;
+  private float angle;
 
-    public int facingIndex;
-    public Sprite[] faceDirectionSprites;
-    public SpriteRenderer sr;
-    public Animator anim;
-    public Sensor sensor;
-    public Sensor meleeSensor;
+  public int facingIndex;
+  public Sprite[] faceDirectionSprites;
+  public SpriteRenderer sr;
+  public Animator anim;
+  public Sensor sensor;
+  public Sensor meleeSensor;
 
-    private Transform playerTransform;
-    private Player playerScript;
-    // Start is called before the first frame update
-    void Start()
+  private Transform playerTransform;
+  private Player playerScript;
+  // Start is called before the first frame update
+  void Start()
+  {
+    sr = transform.GetComponent<SpriteRenderer>();
+    anim = transform.GetComponent<Animator>();
+    sensor = transform.GetComponentInChildren<Sensor>();
+    meleeSensor = transform.GetChild(1).GetComponentInChildren<Sensor>();
+    projectile.GetComponent<EnemyProjectile>().damage = damage;
+    playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+  }
+
+  private void Update()
+  {
+    if (hp <= 0)
     {
-        sr = transform.GetComponent<SpriteRenderer>();
-        anim = transform.GetComponent<Animator>();
-        sensor = transform.GetComponentInChildren<Sensor>();
-        meleeSensor = transform.GetChild(1).GetComponentInChildren<Sensor>();
-        projectile.GetComponent<EnemyProjectile>().damage = damage;
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+      Destroy(gameObject);
     }
 
-    private void Update()
+    if (sensor.inRange == 0)
     {
-        if (hp <= 0)
-        {
-            Destroy(gameObject);
-        }
-
-        if (sensor.inRange == 0)
-        {
-            SetFacingDirection();
-        }
-        else
-        {
-            anim.SetBool("inRange", false);
-        }
-
-        if (meleeSensor.canMelee)
-        {
-            damage = 3;
-        }
-        if (playerScript.currentHealth < damage)
-        {
-            meleeSensor.canMelee = false;
-        }
-
-        anim.SetBool("canMelee", meleeSensor.canMelee);
+      SetFacingDirection();
+    }
+    else
+    {
+      anim.SetBool("inRange", false);
     }
 
-    public void Shoot()
+    if (meleeSensor.canMelee)
     {
-        if (sensor.inRange == 0 && sensor.canMelee == false)
-        {
-            Instantiate(projectile, transform.position, transform.rotation);
-            projectile.GetComponent<EnemyProjectile>().damage = damage;
-        }
+      damage = 3;
+    }
+    if (playerScript.currentHealth < damage)
+    {
+      meleeSensor.canMelee = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    anim.SetBool("canMelee", meleeSensor.canMelee);
+  }
+
+  public void Shoot()
+  {
+    if (sensor.inRange == 0 && sensor.canMelee == false)
     {
-        if (collision.transform.CompareTag("Projectile"))
-        {
-            playerScript.TakeDamage(playerScript.damage);
-        }
+      FindObjectOfType<AudioManager>().Play("EnemyRangeThrowSound");
+      Instantiate(projectile, transform.position, transform.rotation);
+      projectile.GetComponent<EnemyProjectile>().damage = damage;
     }
+  }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
+    if (collision.transform.CompareTag("Projectile"))
     {
-        if (collision.transform.CompareTag("Projectile"))
-        {
-            hp -= playerScript.damage;
-            Destroy(collision.gameObject);
-        }
+      playerScript.TakeDamage(playerScript.damage);
     }
+  }
 
-    public void MeleeAttack()
+  private void OnTriggerEnter2D(Collider2D collision)
+  {
+    if (collision.transform.CompareTag("Projectile"))
     {
-        playerScript.TakeDamage(damage);
+      hp -= playerScript.damage;
+      Destroy(collision.gameObject);
     }
+  }
 
-    private void SetFacingDirection()
+  public void MeleeAttack()
+  {
+    playerScript.TakeDamage(damage);
+  }
+
+  private void SetFacingDirection()
+  {
+    faceDir = (transform.position - playerTransform.position).normalized;
+    angle = Mathf.Atan2(faceDir.y, faceDir.x) * Mathf.Rad2Deg;
+    anim.SetBool("inRange", true);
+
+    if (angle <= 45 && angle >= -45)
     {
-        faceDir = (transform.position - playerTransform.position).normalized;
-        angle = Mathf.Atan2(faceDir.y, faceDir.x) * Mathf.Rad2Deg;
-        anim.SetBool("inRange", true);
+      facingIndex = 1;
+      sr.sprite = faceDirectionSprites[facingIndex];
+      anim.SetInteger("attackDir", facingIndex);
+      if (transform.localScale.x == 1)
+      {
+        sr.flipX = false;
+      }
+      else
+      {
+        sr.flipX = true;
+      }
 
-        if (angle <= 45 && angle >= -45)
-        {
-            facingIndex = 1;
-            sr.sprite = faceDirectionSprites[facingIndex];
-            anim.SetInteger("attackDir", facingIndex);
-            if (transform.localScale.x == 1)
-            {
-                sr.flipX = false;
-            }
-            else
-            {
-                sr.flipX = true;
-            }
-
-        }
-        else if (angle >= 135 || angle <= -135)
-        {
-            facingIndex = 1;
-            sr.sprite = faceDirectionSprites[facingIndex];
-            anim.SetInteger("attackDir", facingIndex);
-            if (transform.localScale.x == 1)
-            {
-                sr.flipX = true;
-            }
-            else
-            {
-                sr.flipX = false;
-            }
-
-        }
-        else if (angle < -45 && angle > -135)
-        {
-            facingIndex = 2;
-            anim.SetInteger("attackDir", facingIndex);
-            sr.flipX = false;
-        }
-        else if (angle > 45 && angle < 135)
-        {
-            facingIndex = 0;
-            anim.SetInteger("attackDir", facingIndex);
-            sr.flipX = false;
-        }
     }
+    else if (angle >= 135 || angle <= -135)
+    {
+      facingIndex = 1;
+      sr.sprite = faceDirectionSprites[facingIndex];
+      anim.SetInteger("attackDir", facingIndex);
+      if (transform.localScale.x == 1)
+      {
+        sr.flipX = true;
+      }
+      else
+      {
+        sr.flipX = false;
+      }
+
+    }
+    else if (angle < -45 && angle > -135)
+    {
+      facingIndex = 2;
+      anim.SetInteger("attackDir", facingIndex);
+      sr.flipX = false;
+    }
+    else if (angle > 45 && angle < 135)
+    {
+      facingIndex = 0;
+      anim.SetInteger("attackDir", facingIndex);
+      sr.flipX = false;
+    }
+  }
 }
