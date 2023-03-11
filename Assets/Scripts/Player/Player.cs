@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject() == false)
         {
+            
             if (Input.GetMouseButtonDown(1) && currStamina >= dashStamina && isDashing == false)
             {
                 isDashing = true;
@@ -93,6 +94,7 @@ public class Player : MonoBehaviour
         movementInputDirectionX = Input.GetAxisRaw("Horizontal");
         movementInputdirectionY = Input.GetAxisRaw("Vertical");
         moveDir = new Vector2(movementInputDirectionX, movementInputdirectionY).normalized;
+        anim.SetFloat("y", movementInputdirectionY);
 
         //keep face direction when idlle
         if (moveDir != new Vector3(0, 0, 0))

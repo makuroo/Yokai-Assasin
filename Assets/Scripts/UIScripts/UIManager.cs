@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Player player;
     public GameObject DefeatPanel;
     public GameObject VictoryPanel;
+    [SerializeField] private GameObject settingPanel;
     public bool isPaused = false;
     private GameObject enemies;
     // Start is called before the first frame update
@@ -32,7 +33,7 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 0;
             VictoryPanel.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.Escape) && player.currentHealth > 0)
+        if (Input.GetKeyDown(KeyCode.Escape) && player.currentHealth > 0 && settingPanel.activeInHierarchy == false)
         {
             CheckIsPaused();
         }
