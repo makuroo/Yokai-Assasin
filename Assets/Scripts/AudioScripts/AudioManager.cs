@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
     [SerializeField] private Slider bgmSlider, sfxSlider;
+    
 
     // Start is called before the first frame update
     private void Awake()
@@ -33,6 +34,7 @@ public class AudioManager : MonoBehaviour
     {
         bgmSlider.value = PlayerPrefs.GetFloat("bgmVolume", 1f);
         sfxSlider.value = PlayerPrefs.GetFloat("sfxVolume", 1f);
+        
         if (SceneManager.GetActiveScene().buildIndex == 0)
             Play("BackgroundMusic");
     }
@@ -60,20 +62,33 @@ public class AudioManager : MonoBehaviour
             s.source.PlayOneShot(s.clip);
     }
 
-    public void setVolume()
+    public void SetBGMVolume()
     {
         foreach (Sound s in sounds)
         {
-            if (s.audioType == 0)
+            if (s.audioType == Sound.TypeAudio.BGM )
             {
                 s.volume = bgmSlider.value;
-                PlayerPrefs.SetFloat("bgmVolume", s.volume);
+                PlayerPrefs.SetFloat("bgmVolume", bgmSlider.value);
             }
-            else
+
+            PlayerPrefs.Save();
+            s.source.volume = s.volume;
+        }
+    }
+
+
+    public void SetSFXVolume()
+    {
+        foreach (Sound s in sounds)
+        {
+            if (s.audioType == Sound.TypeAudio.SFX)
             {
                 s.volume = sfxSlider.value;
-                PlayerPrefs.SetFloat("sfxVolume", s.volume);
+                PlayerPrefs.SetFloat("sfxVolume", sfxSlider.value);
             }
+
+            PlayerPrefs.Save();
             s.source.volume = s.volume;
         }
     }

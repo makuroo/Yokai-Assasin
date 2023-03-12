@@ -9,8 +9,8 @@ public class Sound
 
     public enum TypeAudio
     {
-        BGM = 0,
-        SFX = 1
+        BGM,
+        SFX
     }
 
     public TypeAudio audioType;
