@@ -4,66 +4,143 @@ using UnityEngine;
 
 public class Enemy_Action : MonoBehaviour
 {
-    [SerializeField] private GameObject projectile;
-    [SerializeField] private float speed;
-    [SerializeField] private float nextFire = 0;
-    private bool inRange = false;
-    [SerializeField] Transform target;
-    private Vector3 posDiff;
-    private float fixedZ = -90;
-    private float rotz;
-    // Start is called before the first frame update
-    void Start()
+  [SerializeField] private GameObject projectile;
+  [SerializeField] private float speed;
+
+  [SerializeField] private int hp = 20;
+  [SerializeField] private int damage = 2;
+
+  private Vector2 faceDir;
+  private float angle;
+
+  public int facingIndex;
+  public Sprite[] faceDirectionSprites;
+  public SpriteRenderer sr;
+  public Animator anim;
+  public Sensor sensor;
+  public Sensor meleeSensor;
+
+  private Transform playerTransform;
+  private Player playerScript;
+  // Start is called before the first frame update
+  void Start()
+  {
+    sr = transform.GetComponent<SpriteRenderer>();
+    anim = transform.GetComponent<Animator>();
+    sensor = transform.GetComponentInChildren<Sensor>();
+    meleeSensor = transform.GetChild(1).GetComponentInChildren<Sensor>();
+    projectile.GetComponent<EnemyProjectile>().damage = damage;
+    playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+  }
+
+  private void Update()
+  {
+    if (hp <= 0)
     {
-        
+      Destroy(gameObject);
     }
 
-    private void Update()
+    if (sensor.inRange == 0)
     {
-        
-        if (inRange)
-        {
-            posDiff = target.position - transform.position;
-            rotz = Mathf.Atan2(posDiff.y, posDiff.x) * Mathf.Rad2Deg + fixedZ;
-            transform.rotation = Quaternion.Euler(0, 0, rotz);
-        }
-            
+      SetFacingDirection();
+    }
+    else
+    {
+      anim.SetBool("inRange", false);
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    if (meleeSensor.canMelee)
     {
-        if (inRange)
-        {
-            if (nextFire <= 0)
-            {
-                Shoot();
-                nextFire = 2f;
-            }
-        }
-        nextFire -= Time.deltaTime;
+      damage = 3;
+    }
+    if (playerScript.currentHealth < damage)
+    {
+      meleeSensor.canMelee = false;
     }
 
-    private void Shoot()
-    {
-       StartCoroutine(ShootCoroutine());
-    }
+    anim.SetBool("canMelee", meleeSensor.canMelee);
+  }
 
-    private IEnumerator ShootCoroutine()
+  public void Shoot()
+  {
+    if (sensor.inRange == 0 && sensor.canMelee == false)
     {
-         Instantiate(projectile, transform.position, transform.rotation);
-         yield return new WaitForSeconds(2f);
+      FindObjectOfType<AudioManager>().Play("EnemyRangeThrowSound");
+      Instantiate(projectile, transform.position, transform.rotation);
+      projectile.GetComponent<EnemyProjectile>().damage = damage;
     }
+  }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
+    if (collision.transform.CompareTag("Projectile"))
     {
-        if (collision.gameObject.CompareTag("Player"))
-            inRange = true;
+      playerScript.TakeDamage(playerScript.damage);
     }
+  }
 
-    private void OnTriggerExit2D(Collider2D collision)
+  private void OnTriggerEnter2D(Collider2D collision)
+  {
+    if (collision.transform.CompareTag("Projectile"))
     {
-        if (collision.gameObject.CompareTag("Player"))
-            inRange = false;
+      hp -= playerScript.damage;
+      Destroy(collision.gameObject);
     }
+  }
+
+  public void MeleeAttack()
+  {
+    playerScript.TakeDamage(damage);
+  }
+
+  private void SetFacingDirection()
+  {
+    faceDir = (transform.position - playerTransform.position).normalized;
+    angle = Mathf.Atan2(faceDir.y, faceDir.x) * Mathf.Rad2Deg;
+    anim.SetBool("inRange", true);
+
+    if (angle <= 45 && angle >= -45)
+    {
+      facingIndex = 1;
+      sr.sprite = faceDirectionSprites[facingIndex];
+      anim.SetInteger("attackDir", facingIndex);
+      if (transform.localScale.x == 1)
+      {
+        sr.flipX = false;
+      }
+      else
+      {
+        sr.flipX = true;
+      }
+
+    }
+    else if (angle >= 135 || angle <= -135)
+    {
+      facingIndex = 1;
+      sr.sprite = faceDirectionSprites[facingIndex];
+      anim.SetInteger("attackDir", facingIndex);
+      if (transform.localScale.x == 1)
+      {
+        sr.flipX = true;
+      }
+      else
+      {
+        sr.flipX = false;
+      }
+
+    }
+    else if (angle < -45 && angle > -135)
+    {
+      facingIndex = 2;
+      anim.SetInteger("attackDir", facingIndex);
+      sr.flipX = false;
+    }
+    else if (angle > 45 && angle < 135)
+    {
+      facingIndex = 0;
+      anim.SetInteger("attackDir", facingIndex);
+      sr.flipX = false;
+    }
+  }
 }

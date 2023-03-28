@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 2f;
-    private Rigidbody2D rb;
-    private bool canBeParried = false;
+    [SerializeField] private float speed = 0.1f;
+    Player player;
     private Vector3 targetPos;
+    public int damage;
 
     // Start is called before the first frame update
     void Start()
     {
         targetPos = FindObjectOfType<Player>().transform.position;
-        Destroy(gameObject, 2f);
+        player = FindObjectOfType<Player>();
+        Destroy(gameObject, 1f);
     }
 
     // Update is called once per frame
@@ -24,17 +26,21 @@ public class EnemyProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("ParryField"))
+
+        if (collision.CompareTag("Projectile") && player.currStamina >= player.parryStamina)
         {
-            canBeParried = true;
-            Debug.Log(canBeParried);
+            player.parried = true;
+            player.VerifyParryStaminaUsage();
+            collision.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Parry");
+            collision.GetComponent<CircleCollider2D>().enabled = false;
+            Destroy(collision.gameObject, .1f);
+            Destroy(gameObject);
         }
 
-        if (canBeParried && collision.CompareTag("Projectile"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("hit");
+            collision.GetComponent<Player>().TakeDamage(damage);
             Destroy(gameObject);
-            canBeParried = false;
         }
     }
 }

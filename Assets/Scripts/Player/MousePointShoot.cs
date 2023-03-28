@@ -18,8 +18,9 @@ public class MousePointShoot : MonoBehaviour
     {
         mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         Vector3 rotation = mousePos - transform.position;
-        rotz= Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg -8f;
+        rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg - 2f;
         transform.rotation = Quaternion.Euler(0, 0, rotz);
         transform.localScale = transform.parent.localScale;
+
     }
 }
