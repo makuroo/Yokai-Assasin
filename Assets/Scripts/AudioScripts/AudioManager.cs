@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
             s.source.loop = true;
         }
         else
-        {
+        {   
             s.source.loop = false;
         }
         s.source.Play();
