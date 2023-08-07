@@ -214,15 +214,15 @@ MonoBehaviour:
   parried: 0
   damage: 2
   maxHealth: 20
-  currentHealth: 0
+  currentHealth: -1
   maxStamina: 0
   currStamina: 0
   dashStamina: 5
   parryStamina: 5
   anim: {fileID: 0}
   moveDir: {x: 0, y: 0, z: 0}
-  healthBar: {fileID: 0}
-  parryField: {fileID: 0}
+  audioManager: {fileID: 503460386266999433, guid: c323611ff46507e4cbf325534ef3ef2a, type: 3}
+  healthBar: {fileID: 1345403910932655504, guid: 5ff802122799d5f4c947d76d04f3a424, type: 3}
 --- !u!50 &7457256224951114054
 Rigidbody2D:
   serializedVersion: 4
