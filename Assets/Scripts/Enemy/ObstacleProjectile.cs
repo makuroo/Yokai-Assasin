@@ -6,6 +6,7 @@ public class ObstacleProjectile : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] int damageAmount = 1;
+    [SerializeField] float lifetime = 3.0f;
     public Player player;
 
     // Start is called before the first frame update
@@ -18,6 +19,7 @@ public class ObstacleProjectile : MonoBehaviour
     void Update()
     {
         transform.Translate(new Vector2(speed * Time.deltaTime, 0));
+        Destroy(gameObject, lifetime);
     }
 
     private void OnCollisionEnter2D(Collision2D coll)
