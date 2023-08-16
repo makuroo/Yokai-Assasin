@@ -17,6 +17,7 @@ public class Shoot : MonoBehaviour
     [SerializeField] private Sprite[] sprite;
     [SerializeField] private RuntimeAnimatorController[] animController;
     private int specialCount = 3;
+    [SerializeField] Transform center;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +33,6 @@ public class Shoot : MonoBehaviour
     private void Player_OnLeftMouseClick(object sender, System.EventArgs e)
     {
         InstantiateProjectile();
-        FindObjectOfType<AudioManager>().Play("ShurikenShoot");
     }
 
     private void Player_OnPickUpPowerUps(object sender, System.EventArgs e)
@@ -67,10 +67,12 @@ public class Shoot : MonoBehaviour
 
     private void InstantiateProjectile()
     {
-        if ((Mathf.Abs(direction.x) > .5f || Mathf.Abs(direction.y) > .5f))
+        if (Mathf.Abs(center.position.x - mousePos.x) > 1f || Mathf.Abs(center.position.y - mousePos.y) > 1f)
         {
             if (cooldown <= 0)
             {
+
+                FindObjectOfType<AudioManager>().Play("ShurikenShoot");
                 player.shoot = false;
                 tempMousePos = mousePos;
                 cooldown = 0.5f;

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8f38e58558be3c44ba953df87c0ca317
+guid: c4b4b5aefd418a14c85f380571b4f86a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -129,7 +129,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Razor_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 9
+        width: 211
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 794479b9877351244a08b13190830966
+      internalID: -1078831490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Razor_1
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 14
+        width: 228
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bada2826f3ac4ff489f9296d01d20061
+      internalID: 1324015544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Razor_2
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 30
+        width: 234
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 366aadd6bc12d5c48843d1ac1feec4fe
+      internalID: -673414219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Razor_3
+      rect:
+        serializedVersion: 2
+        x: 782
+        y: 22
+        width: 227
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d0dcd6e920cad24ebcdd6283ab4479d
+      internalID: 1771653817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -140,7 +224,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Razor_0: -1078831490
+      Razor_2: -673414219
+      Razor_3: 1771653817
+      Razor_1: 1324015544
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
