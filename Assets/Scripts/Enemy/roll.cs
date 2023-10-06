@@ -6,7 +6,7 @@ public class roll : MonoBehaviour
 {
     public Player player;
     [SerializeField] int damageAmount = 2;
-    float speed = 2.0f;
+    [SerializeField]float speed = 2.0f;
     float damageInterval = 0.6f;
     [SerializeField] float resetTime = 5.0f;
     float lastDamageTime;

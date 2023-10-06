@@ -78,6 +78,10 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("ManMenu");
     }
 
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
 }
 
 

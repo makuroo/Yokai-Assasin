@@ -17,16 +17,7 @@ public class DamageZone : MonoBehaviour
     }
     void Update()
     {
-        if (playerInside)
-        {
-            timer += Time.deltaTime;
-
-            if (timer >= damageDuration)
-            {
-                ApplyDamage();
-                timer = 0.0f; // Reset the timer after applying damage
-            }
-        }
+        
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -42,12 +33,12 @@ public class DamageZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = false;
-            timer = 0.0f;
         }
     }
 
-    void ApplyDamage()
+    public void ApplyDamage()
     {
-        player.TakeDamage(damageAmount);
+        if(playerInside)
+            player.TakeDamage(damageAmount);
     }
 }

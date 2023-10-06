@@ -17,7 +17,7 @@ public class AudioManager : MonoBehaviour
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
-            if (s.audioType == 0)
+            if (s.audioType == Sound.TypeAudio.BGM)
             {
                 s.volume = bgmSlider.value;
             }
